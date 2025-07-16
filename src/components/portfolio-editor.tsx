@@ -7,14 +7,15 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Download, FileImage, FileText, FileType, Plus, Trash2, Upload, Wand2 } from 'lucide-react';
+import { Download, FileImage, FileText, FileType, LayoutTemplate, Plus, Trash2, Upload, Wand2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
 import Image from 'next/image';
 import { Badge } from './ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from './ui/dropdown-menu';
+import { templates } from '@/lib/templates';
 
 const initialData: PortfolioData = {
   name: 'Alex Doe',
@@ -76,6 +77,11 @@ export function PortfolioEditor() {
     }
   }
 
+  const handleTemplateSelect = (template: PortfolioData) => {
+    setPortfolio(template);
+    toast({ title: 'Template applied!', description: 'The portfolio has been updated with the new template.' });
+  };
+
 
   const handleExport = (format: 'pdf' | 'png' | 'jpeg' | 'doc') => {
     toast({ title: "Exporting...", description: `Your portfolio is being exported as a ${format.toUpperCase()} file.`});
@@ -111,6 +117,22 @@ GitHub: ${portfolio.contact.github}
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold font-headline">Portfolio Builder</h1>
         <div className="flex items-center gap-2 flex-wrap justify-center">
+           <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline"><LayoutTemplate className="mr-2 h-4 w-4" />Templates</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {templates.map(template => (
+                 <DropdownMenuItem key={template.name} onClick={() => handleTemplateSelect(template.data)}>
+                   {template.name}
+                 </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+               <DropdownMenuItem onClick={() => handleTemplateSelect(initialData)}>
+                   Reset to Default
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button variant="outline" onClick={() => setIsAiSheetOpen(true)}><Wand2 className="mr-2 h-4 w-4" />AI Advisor</Button>
           <Button variant="outline"><Upload className="mr-2 h-4 w-4" />Import</Button>
           <DropdownMenu>
