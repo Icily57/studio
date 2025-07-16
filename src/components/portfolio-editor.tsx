@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import type { PortfolioData, Project } from '@/types';
+import type { PortfolioData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Download, FileImage, FileText, FileType, LayoutTemplate, Plus, Trash2, Upload, Wand2, X } from 'lucide-react';
+import { Download, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
@@ -77,7 +77,7 @@ GitHub: ${portfolio.contact.github}
   return (
     <>
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-        <h1 className="text-2xl font-bold font-headline">Portfolio Builder</h1>
+        <h1 className="text-2xl font-bold font-headline text-primary">Portfolio Builder</h1>
         <div className="flex items-center gap-2 flex-wrap justify-center">
           <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
             <DialogTrigger asChild>
@@ -92,10 +92,10 @@ GitHub: ${portfolio.contact.github}
                 <ScrollArea className="h-full pr-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <Card
-                      className="cursor-pointer hover:shadow-lg transition-shadow border-dashed border-2 flex items-center justify-center"
+                      className="cursor-pointer hover:shadow-lg hover:border-accent transition-all border-2 flex items-center justify-center p-6"
                       onClick={() => handleTemplateSelect(initialData)}
                     >
-                      <CardHeader>
+                      <CardHeader className="text-center">
                         <CardTitle>Reset to Default</CardTitle>
                         <CardDescription>Start with the default developer template.</CardDescription>
                       </CardHeader>
@@ -103,11 +103,11 @@ GitHub: ${portfolio.contact.github}
                     {templates.map(template => (
                       <Card
                         key={template.name}
-                        className="cursor-pointer hover:shadow-lg transition-shadow"
+                        className="cursor-pointer hover:shadow-lg hover:border-accent transition-all border-2 flex flex-col justify-between p-6"
                         onClick={() => handleTemplateSelect(template.data)}
                       >
                         <CardHeader>
-                          <CardTitle>{template.name}</CardTitle>
+                          <CardTitle className="text-lg">{template.name}</CardTitle>
                           <CardDescription>{template.data.title}</CardDescription>
                         </CardHeader>
                       </Card>
@@ -119,7 +119,7 @@ GitHub: ${portfolio.contact.github}
           </Dialog>
 
           <Button variant="outline" onClick={() => setIsAiSheetOpen(true)}><Wand2 className="mr-2 h-4 w-4" />AI Advisor</Button>
-          <Button variant="outline"><Upload className="mr-2 h-4 w-4" />Import</Button>
+          <Button variant="outline" disabled><Upload className="mr-2 h-4 w-4" />Import</Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button><Download className="mr-2 h-4 w-4" />Export</Button>
@@ -128,18 +128,20 @@ GitHub: ${portfolio.contact.github}
               <DropdownMenuItem onClick={() => handleExport('pdf')}><FileText className="mr-2 h-4 w-4" />PDF</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleExport('png')}><FileImage className="mr-2 h-4 w-4" />PNG</DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleExport('jpeg')}><FileImage className="mr-2 h-4 w-4" />JPG</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExport('doc')}><FileType className="mr-2 h-4 w-4" />DOC</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport('doc')} disabled><FileType className="mr-2 h-4 w-4" />DOC</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
-      <div className="grid lg:grid-cols-2 gap-8 items-start">
-        <PortfolioForm portfolio={portfolio} setPortfolio={setPortfolio} />
+      <div className="grid lg:grid-cols-[40%_60%] gap-8 items-start">
+        <ScrollArea className="h-[calc(100vh-10rem)] rounded-lg">
+           <PortfolioForm portfolio={portfolio} setPortfolio={setPortfolio} />
+        </ScrollArea>
         <div className="hidden lg:block sticky top-24">
-            <h2 className="text-lg font-semibold font-headline mb-4">Live Preview</h2>
-            <Card className="shadow-lg">
-                <ScrollArea className="h-[calc(100vh-10rem)]">
-                    <div id="portfolio-preview" className="bg-background p-4 sm:p-8">
+            <h2 className="text-lg font-semibold font-headline mb-4 text-primary">Live Preview</h2>
+            <Card className="shadow-lg border-2">
+                <ScrollArea className="h-[calc(100vh-12rem)]">
+                    <div id="portfolio-preview" className="bg-white p-4 sm:p-8">
                         <PortfolioPreview portfolio={portfolio} />
                     </div>
                 </ScrollArea>

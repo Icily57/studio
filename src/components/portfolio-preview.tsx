@@ -15,29 +15,29 @@ interface PortfolioPreviewProps {
 
 export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
     return (
-        <div className="font-body">
-            <header className="flex flex-col md:flex-row items-center gap-8 mb-12">
-                <Avatar className="w-32 h-32 text-6xl">
+        <div className="font-body text-gray-800 bg-white">
+            <header className="flex flex-col md:flex-row items-center gap-8 mb-12 text-center md:text-left">
+                <Avatar className="w-32 h-32 text-6xl border-4 border-primary/10 shadow-md">
                     <AvatarImage src={portfolio.avatarUrl} data-ai-hint="professional portrait" />
                     <AvatarFallback>{portfolio.name.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <div className="text-center md:text-left flex-1">
-                    <h1 className="text-4xl font-bold font-headline">{portfolio.name}</h1>
-                    <p className="text-xl text-accent font-medium">{portfolio.title}</p>
+                <div className="flex-1">
+                    <h1 className="text-4xl lg:text-5xl font-bold font-headline text-gray-900">{portfolio.name}</h1>
+                    <p className="text-xl text-accent font-medium mt-1">{portfolio.title}</p>
                 </div>
             </header>
             
             <main>
                 <section className="mb-12">
-                    <h2 className="text-3xl font-bold font-headline mb-4 border-b-2 border-primary pb-2">About Me</h2>
-                    <p className="text-muted-foreground leading-relaxed">{portfolio.about}</p>
+                    <h2 className="text-2xl font-bold font-headline mb-4 border-b-2 border-primary pb-2 text-gray-900">About Me</h2>
+                    <p className="text-gray-600 leading-relaxed whitespace-pre-line">{portfolio.about}</p>
                 </section>
 
                 <section className="mb-12">
-                    <h2 className="text-3xl font-bold font-headline mb-4 border-b-2 border-primary pb-2">Skills</h2>
+                    <h2 className="text-2xl font-bold font-headline mb-4 border-b-2 border-primary pb-2 text-gray-900">Skills</h2>
                     <div className="flex flex-wrap gap-3">
                         {portfolio.skills.map((skill, index) => (
-                            <Badge key={index} variant="default" className="text-base py-1 px-4 rounded-full">
+                            <Badge key={index} variant="default" className="text-base py-1 px-4 rounded-full bg-primary/90 text-primary-foreground">
                                 {skill}
                             </Badge>
                         ))}
@@ -45,10 +45,10 @@ export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
                 </section>
 
                 <section>
-                    <h2 className="text-3xl font-bold font-headline mb-8 border-b-2 border-primary pb-2">Projects</h2>
+                    <h2 className="text-2xl font-bold font-headline mb-8 border-b-2 border-primary pb-2 text-gray-900">Projects</h2>
                     <div className="grid md:grid-cols-2 gap-8">
                         {portfolio.projects.map(project => (
-                        <Card key={project.id} className="overflow-hidden group">
+                        <Card key={project.id} className="overflow-hidden group shadow-md hover:shadow-xl transition-shadow duration-300 border">
                             <div className="aspect-video relative overflow-hidden">
                                 <Image 
                                     src={project.imageUrl || 'https://placehold.co/400x300.png'} 
@@ -60,10 +60,10 @@ export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
                                 />
                             </div>
                             <CardHeader>
-                                <h3 className="text-xl font-bold font-headline">{project.name}</h3>
+                                <h3 className="text-xl font-bold font-headline text-gray-900">{project.name}</h3>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-muted-foreground mb-4 min-h-[60px]">{project.description}</p>
+                                <p className="text-gray-600 mb-4 min-h-[60px]">{project.description}</p>
                                 {project.link && (
                                     <a 
                                         href={project.link} 
@@ -80,11 +80,11 @@ export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
                     </div>
                 </section>
                 
-                <Separator className="my-12" />
+                <Separator className="my-12 bg-gray-200" />
                 
-                <section>
-                    <h2 className="text-3xl font-bold font-headline mb-4 border-b-2 border-primary pb-2">Contact Me</h2>
-                    <div className="grid sm:grid-cols-2 gap-6 text-muted-foreground">
+                <footer>
+                    <h2 className="text-2xl font-bold font-headline mb-4 border-b-2 border-primary pb-2 text-gray-900">Contact Me</h2>
+                    <div className="grid sm:grid-cols-2 gap-6 text-gray-600">
                         {portfolio.contact.email && (
                             <div className="flex items-center gap-3">
                                 <Mail className="w-5 h-5 text-primary" />
@@ -110,7 +110,7 @@ export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
                             </div>
                         )}
                     </div>
-                </section>
+                </footer>
             </main>
         </div>
     );
