@@ -3,19 +3,21 @@
 import { useState } from 'react';
 import type { PortfolioData, Project } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Download, FileImage, FileText, FileType, LayoutTemplate, Plus, Trash2, Upload, Wand2 } from 'lucide-react';
+import { Download, FileImage, FileText, FileType, LayoutTemplate, Plus, Trash2, Upload, Wand2, X } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
 import Image from 'next/image';
 import { Badge } from './ui/badge';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from './ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { templates } from '@/lib/templates';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { ScrollArea } from './ui/scroll-area';
 
 const initialData: PortfolioData = {
   name: 'Alex Doe',
@@ -38,6 +40,7 @@ const initialData: PortfolioData = {
 export function PortfolioEditor() {
   const [portfolio, setPortfolio] = useState<PortfolioData>(initialData);
   const [isAiSheetOpen, setIsAiSheetOpen] = useState(false);
+  const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const handleFieldChange = (field: keyof PortfolioData, value: any) => {
@@ -79,6 +82,7 @@ export function PortfolioEditor() {
 
   const handleTemplateSelect = (template: PortfolioData) => {
     setPortfolio(template);
+    setIsTemplateDialogOpen(false);
     toast({ title: 'Template applied!', description: 'The portfolio has been updated with the new template.' });
   };
 
@@ -117,22 +121,45 @@ GitHub: ${portfolio.contact.github}
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold font-headline">Portfolio Builder</h1>
         <div className="flex items-center gap-2 flex-wrap justify-center">
-           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+          <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
+            <DialogTrigger asChild>
               <Button variant="outline"><LayoutTemplate className="mr-2 h-4 w-4" />Templates</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {templates.map(template => (
-                 <DropdownMenuItem key={template.name} onClick={() => handleTemplateSelect(template.data)}>
-                   {template.name}
-                 </DropdownMenuItem>
-              ))}
-              <DropdownMenuSeparator />
-               <DropdownMenuItem onClick={() => handleTemplateSelect(initialData)}>
-                   Reset to Default
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-headline">Choose a Template</DialogTitle>
+                <p className="text-muted-foreground">Select a starting point for your portfolio. You can customize everything later.</p>
+              </DialogHeader>
+              <div className="flex-1 min-h-0">
+                <ScrollArea className="h-full pr-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <Card
+                      className="cursor-pointer hover:shadow-lg transition-shadow border-dashed border-2 flex items-center justify-center"
+                      onClick={() => handleTemplateSelect(initialData)}
+                    >
+                      <CardHeader>
+                        <CardTitle>Reset to Default</CardTitle>
+                        <CardDescription>Start with the default developer template.</CardDescription>
+                      </CardHeader>
+                    </Card>
+                    {templates.map(template => (
+                      <Card
+                        key={template.name}
+                        className="cursor-pointer hover:shadow-lg transition-shadow"
+                        onClick={() => handleTemplateSelect(template.data)}
+                      >
+                        <CardHeader>
+                          <CardTitle>{template.name}</CardTitle>
+                          <CardDescription>{template.data.title}</CardDescription>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            </DialogContent>
+          </Dialog>
+
           <Button variant="outline" onClick={() => setIsAiSheetOpen(true)}><Wand2 className="mr-2 h-4 w-4" />AI Advisor</Button>
           <Button variant="outline"><Upload className="mr-2 h-4 w-4" />Import</Button>
           <DropdownMenu>
@@ -229,3 +256,5 @@ GitHub: ${portfolio.contact.github}
     </>
   );
 }
+
+    
