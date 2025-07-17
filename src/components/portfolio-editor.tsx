@@ -15,6 +15,7 @@ import { ScrollArea } from './ui/scroll-area';
 import { PortfolioPreview } from './portfolio-preview';
 import { PortfolioForm } from './portfolio-form';
 import { ImportDialog } from './import-dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 
 const initialData: PortfolioData = {
@@ -33,6 +34,10 @@ const initialData: PortfolioData = {
     linkedin: 'linkedin.com/in/alexdoe',
     github: 'github.com/alexdoe',
   },
+  design: {
+    themeColor: '#0ea5e9', // sky-500
+    font: 'inter',
+  }
 };
 
 export function PortfolioEditor() {
@@ -44,7 +49,7 @@ export function PortfolioEditor() {
   const { toast } = useToast();
 
   const handleTemplateSelect = (template: PortfolioData) => {
-    setPortfolio(template);
+    setPortfolio({...template, design: portfolio.design }); // Keep current design settings
     setIsTemplateDialogOpen(false);
     toast({ title: 'Template applied!', description: 'The portfolio has been updated with the new template.' });
   };
@@ -66,7 +71,7 @@ export function PortfolioEditor() {
   }
 
   const handleImportComplete = (data: PortfolioData) => {
-    setPortfolio(data);
+    setPortfolio({...data, design: portfolio.design }); // Keep design settings
   };
   
   const getPortfolioContentAsString = (): string => {
@@ -150,9 +155,22 @@ GitHub: ${portfolio.contact.github}
         </div>
       </div>
       <div className="grid lg:grid-cols-[40%_60%] gap-8 items-start">
-        <ScrollArea className="h-[calc(100vh-12rem)] rounded-lg p-2 bg-secondary/20">
-           <PortfolioForm portfolio={portfolio} setPortfolio={setPortfolio} />
-        </ScrollArea>
+        <Tabs defaultValue="content" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="design">Design</TabsTrigger>
+          </TabsList>
+          <TabsContent value="content">
+            <ScrollArea className="h-[calc(100vh-16rem)] rounded-lg p-2 mt-2 bg-secondary/20">
+              <PortfolioForm portfolio={portfolio} setPortfolio={setPortfolio} />
+            </ScrollArea>
+          </TabsContent>
+          <TabsContent value="design">
+             <ScrollArea className="h-[calc(100vh-16rem)] rounded-lg p-2 mt-2 bg-secondary/20">
+              <PortfolioForm portfolio={portfolio} setPortfolio={setPortfolio} tab="design"/>
+            </ScrollArea>
+          </TabsContent>
+        </Tabs>
         <div className="hidden lg:block sticky top-24">
             <h2 className="text-lg font-semibold font-headline mb-4 text-foreground">Live Preview</h2>
             <Card className="shadow-lg border-2">

@@ -1,7 +1,12 @@
 
 import type { PortfolioData } from '@/types';
 
-export const templates: { name: string; data: PortfolioData }[] = [
+const defaultDesign = {
+  themeColor: '#0ea5e9',
+  font: 'inter' as const,
+};
+
+export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] = [
   {
     name: 'Modern Minimalist',
     data: {
@@ -753,3 +758,5 @@ export const templates: { name: string; data: PortfolioData }[] = [
     }
   }
 ];
+
+export const templatesWithDesign = templates.map(t => ({ ...t, data: { ...t.data, design: defaultDesign }}));

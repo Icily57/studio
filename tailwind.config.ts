@@ -13,6 +13,10 @@ export default {
         body: ['Inter', 'sans-serif'],
         headline: ['Space Grotesk', 'sans-serif'],
         code: ['monospace'],
+        inter: ['Inter', 'sans-serif'],
+        space: ['Space Grotesk', 'sans-serif'],
+        serif: ['Lora', 'serif'],
+        playfair: ['Playfair Display', 'serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

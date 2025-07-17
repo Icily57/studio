@@ -12,10 +12,12 @@ import { Plus, Trash2, Upload } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from './ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 interface PortfolioFormProps {
     portfolio: PortfolioData;
     setPortfolio: Dispatch<SetStateAction<PortfolioData>>;
+    tab?: 'content' | 'design';
 }
 
 const parseImageUrlSrc = (url: string) => {
@@ -23,11 +25,15 @@ const parseImageUrlSrc = (url: string) => {
     return url.split('"')[0];
 }
 
-export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
+export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: PortfolioFormProps) {
     const { toast } = useToast();
 
     const handleFieldChange = (field: keyof PortfolioData, value: any) => {
         setPortfolio(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleDesignChange = (field: keyof PortfolioData['design'], value: any) => {
+        setPortfolio(prev => ({ ...prev, design: {...prev.design, [field]: value } }));
     };
     
     const handleContactChange = (field: keyof PortfolioData['contact'], value: string) => {
@@ -98,6 +104,56 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
             reader.readAsDataURL(file);
         }
     };
+
+    if (tab === 'design') {
+        return (
+            <div className="space-y-6">
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Appearance</CardTitle>
+                        <CardDescription>Customize the look and feel of your portfolio.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="themeColor">Theme Color</Label>
+                            <div className="flex items-center gap-2">
+                                <Input 
+                                  id="themeColor" 
+                                  type="color" 
+                                  value={portfolio.design.themeColor} 
+                                  onChange={(e) => handleDesignChange('themeColor', e.target.value)} 
+                                  className="w-12 h-10 p-1"
+                                />
+                                <Input 
+                                    type="text"
+                                    value={portfolio.design.themeColor}
+                                    onChange={(e) => handleDesignChange('themeColor', e.target.value)}
+                                    placeholder="#0ea5e9"
+                                />
+                            </div>
+                        </div>
+                         <div className="space-y-2">
+                            <Label htmlFor="font">Font Style</Label>
+                            <Select
+                                value={portfolio.design.font}
+                                onValueChange={(value) => handleDesignChange('font', value)}
+                            >
+                                <SelectTrigger id="font">
+                                    <SelectValue placeholder="Select a font style" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="inter">Modern (Inter)</SelectItem>
+                                    <SelectItem value="space">Futuristic (Space Grotesk)</SelectItem>
+                                    <SelectItem value="serif">Elegant (Lora)</SelectItem>
+                                    <SelectItem value="system">System Default</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        )
+    }
 
     return (
         <div className="space-y-6">

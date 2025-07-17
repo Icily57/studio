@@ -19,4 +19,8 @@ export interface PortfolioData {
     linkedin: string;
     github: string;
   };
+  design: {
+    themeColor: string;
+    font: 'inter' | 'space' | 'system' | 'serif';
+  };
 }
