@@ -14,6 +14,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ScrollArea } from './ui/scroll-area';
 import { PortfolioPreview } from './portfolio-preview';
 import { PortfolioForm } from './portfolio-form';
+import { ImportDialog } from './import-dialog';
+
 
 const initialData: PortfolioData = {
   name: 'Alex Doe',
@@ -38,6 +40,7 @@ export function PortfolioEditor() {
   const [isAiSheetOpen, setIsAiSheetOpen] = useState(false);
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const handleTemplateSelect = (template: PortfolioData) => {
@@ -61,6 +64,10 @@ export function PortfolioEditor() {
       toast({ title: "Coming Soon!", description: "DOC export is not yet available." });
     }
   }
+
+  const handleImportComplete = (data: PortfolioData) => {
+    setPortfolio(data);
+  };
   
   const getPortfolioContentAsString = (): string => {
     return `
@@ -128,7 +135,7 @@ GitHub: ${portfolio.contact.github}
           </Dialog>
 
           <Button variant="outline" onClick={() => setIsAiSheetOpen(true)}><Wand2 className="mr-2 h-4 w-4" />AI Advisor</Button>
-          <Button variant="outline" disabled><Upload className="mr-2 h-4 w-4" />Import</Button>
+          <Button variant="outline" onClick={() => setIsImportDialogOpen(true)}><Upload className="mr-2 h-4 w-4" />Import</Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90"><Download className="mr-2 h-4 w-4" />Export</Button>
@@ -159,6 +166,12 @@ GitHub: ${portfolio.contact.github}
       </div>
 
       <AiAdvisorSheet open={isAiSheetOpen} onOpenChange={setIsAiSheetOpen} portfolioContent={getPortfolioContentAsString()} />
+      
+      <ImportDialog 
+        open={isImportDialogOpen} 
+        onOpenChange={setIsImportDialogOpen}
+        onImportComplete={handleImportComplete}
+      />
       
       <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
         <DialogContent className="max-w-4xl w-[95vw] h-[90vh] flex flex-col p-0">
