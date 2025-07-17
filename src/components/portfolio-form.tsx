@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Plus, Trash2, Upload } from 'lucide-react';
+import { Plus, Trash2, Upload, LayoutPanelTop, PanelLeft, LayoutList } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from './ui/label';
@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { designTemplates } from '@/lib/design-templates';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 
 interface PortfolioFormProps {
     portfolio: PortfolioData;
@@ -112,6 +113,7 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
         setPortfolio(prev => ({
             ...prev,
             design: {
+                ...prev.design,
                 themeColor: template.themeColor,
                 font: template.font,
             }
@@ -194,6 +196,41 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
                         </div>
                     </CardContent>
                 </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Layout Arrangement</CardTitle>
+                        <CardDescription>Choose the overall structure of your portfolio.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <RadioGroup
+                            value={portfolio.design.layout}
+                            onValueChange={(value) => handleDesignChange('layout', value)}
+                            className="grid grid-cols-3 gap-4"
+                        >
+                            <div>
+                                <RadioGroupItem value="classic-top" id="layout-classic" className="peer sr-only" />
+                                <Label htmlFor="layout-classic" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                                    <LayoutPanelTop className="mb-3 h-6 w-6" />
+                                    Top Header
+                                </Label>
+                            </div>
+                             <div>
+                                <RadioGroupItem value="modern-left" id="layout-modern" className="peer sr-only" />
+                                <Label htmlFor="layout-modern" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                                    <PanelLeft className="mb-3 h-6 w-6" />
+                                    Side Bar
+                                </Label>
+                            </div>
+                             <div>
+                                <RadioGroupItem value="centered-minimal" id="layout-minimal" className="peer sr-only" />
+                                <Label htmlFor="layout-minimal" className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer">
+                                    <LayoutList className="mb-3 h-6 w-6" />
+                                    Minimal
+                                </Label>
+                            </div>
+                        </RadioGroup>
+                    </CardContent>
+                 </Card>
             </div>
         )
     }

@@ -22,5 +22,6 @@ export interface PortfolioData {
   design: {
     themeColor: string;
     font: 'inter' | 'space' | 'system' | 'serif';
+    layout: 'classic-top' | 'modern-left' | 'centered-minimal';
   };
 }

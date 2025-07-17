@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { PortfolioData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Sparkles, Upload, Wand2 } from 'lucide-react';
+import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
@@ -21,12 +21,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 const initialData: PortfolioData = {
   name: 'Alex Doe',
   title: 'Full-Stack Developer & UI/UX Designer',
-  avatarUrl: 'https://placehold.co/128x128.png',
+  avatarUrl: 'https://placehold.co/128x128.png" data-ai-hint="user avatar"',
   about: "I'm a passionate developer with a knack for creating beautiful and functional web applications. With over 5 years of experience, I've honed my skills in both front-end and back-end development, always striving for pixel-perfect design and robust code.",
   skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Figma', 'UI/UX Design', 'Tailwind CSS'],
   projects: [
-    { id: '1', name: 'E-commerce Platform', description: 'A full-featured e-commerce site with a custom CMS.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
-    { id: '2', name: 'Project Management Tool', description: 'A SaaS application to help teams manage tasks and projects.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
+    { id: '1', name: 'E-commerce Platform', description: 'A full-featured e-commerce site with a custom CMS.', imageUrl: 'https://placehold.co/400x300.png" data-ai-hint="online store"', link: '#' },
+    { id: '2', name: 'Project Management Tool', description: 'A SaaS application to help teams manage tasks and projects.', imageUrl: 'https://placehold.co/400x300.png" data-ai-hint="task management"', link: '#' },
   ],
   contact: {
     email: 'alex.doe@example.com',
@@ -37,6 +37,7 @@ const initialData: PortfolioData = {
   design: {
     themeColor: '#0ea5e9', // sky-500
     font: 'inter',
+    layout: 'classic-top',
   }
 };
 
@@ -48,8 +49,8 @@ export function PortfolioEditor() {
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleTemplateSelect = (template: PortfolioData) => {
-    setPortfolio({...template, design: portfolio.design }); // Keep current design settings
+  const handleTemplateSelect = (template: Omit<PortfolioData, 'design'>) => {
+    setPortfolio(prev => ({ ...template, design: prev.design }));
     setIsTemplateDialogOpen(false);
     toast({ title: 'Template applied!', description: 'The portfolio has been updated with the new template.' });
   };
@@ -71,7 +72,7 @@ export function PortfolioEditor() {
   }
 
   const handleImportComplete = (data: PortfolioData) => {
-    setPortfolio({...data, design: portfolio.design }); // Keep design settings
+    setPortfolio(prev => ({...data, design: prev.design })); // Keep design settings
   };
   
   const getPortfolioContentAsString = (): string => {
@@ -106,8 +107,8 @@ GitHub: ${portfolio.contact.github}
             </DialogTrigger>
             <DialogContent className="max-w-4xl h-[90vh] flex flex-col bg-card/80 backdrop-blur-xl">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-headline">Choose a Template</DialogTitle>
-                <p className="text-muted-foreground">Select a starting point for your portfolio. You can customize everything later.</p>
+                <DialogTitle className="text-2xl font-headline">Choose a Content Template</DialogTitle>
+                <p className="text-muted-foreground">Select a starting point for your portfolio content. You can customize everything later.</p>
               </DialogHeader>
               <div className="flex-1 min-h-0">
                 <ScrollArea className="h-full pr-6">
