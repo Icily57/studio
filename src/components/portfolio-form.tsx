@@ -1,14 +1,14 @@
 // This is a new file
 'use client';
 
-import type { Dispatch, SetStateAction } from 'react';
+import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import type { PortfolioData, Project } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Upload } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from './ui/label';
@@ -73,6 +73,27 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
         setPortfolio(prev => ({ ...prev, projects: prev.projects.filter(p => p.id !== projectId) }));
     }
 
+    const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                toast({
+                    title: "Image too large",
+                    description: "Please select an image smaller than 2MB.",
+                    variant: "destructive",
+                });
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (loadEvent) => {
+                if(loadEvent.target?.result) {
+                    handleFieldChange('avatarUrl', loadEvent.target.result as string);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <div className="space-y-6">
             <Card>
@@ -88,7 +109,16 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
                         </Avatar>
                         <div className="flex-1 space-y-2">
                              <Label htmlFor="avatarUrl">Avatar URL</Label>
-                             <Input id="avatarUrl" placeholder="https://placehold.co/128x128.png" value={portfolio.avatarUrl} onChange={(e) => handleFieldChange('avatarUrl', e.target.value)} />
+                             <div className="flex gap-2">
+                                <Input id="avatarUrl" placeholder="https://placehold.co/128x128.png" value={portfolio.avatarUrl} onChange={(e) => handleFieldChange('avatarUrl', e.target.value)} />
+                                <Button asChild variant="outline" size="icon">
+                                    <Label htmlFor="avatar-upload" className="cursor-pointer">
+                                        <Upload className="h-4 w-4"/>
+                                        <span className="sr-only">Upload Photo</span>
+                                    </Label>
+                                </Button>
+                                <Input type="file" id="avatar-upload" className="hidden" accept="image/*" onChange={handleAvatarUpload} />
+                             </div>
                         </div>
                     </div>
                     <div className="space-y-2">
