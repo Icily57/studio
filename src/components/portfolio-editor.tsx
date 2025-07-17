@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -10,13 +11,13 @@ import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { templates } from '@/lib/templates';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from './ui/dialog';
 import { ScrollArea } from './ui/scroll-area';
 import { PortfolioPreview } from './portfolio-preview';
 import { PortfolioForm } from './portfolio-form';
 import { ImportDialog } from './import-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import Link from 'next/link';
@@ -139,7 +140,7 @@ GitHub: ${portfolio.contact.github}
             <DialogContent className="max-w-4xl h-[90vh] flex flex-col bg-card/80 backdrop-blur-xl">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-headline">Choose a Content Template</DialogTitle>
-                <p className="text-muted-foreground">Select a starting point for your portfolio content. You can customize everything later.</p>
+                <DialogDescription>Select a starting point for your portfolio content. You can customize everything later.</DialogDescription>
               </DialogHeader>
               <div className="flex-1 min-h-0">
                 <ScrollArea className="h-full pr-6">
