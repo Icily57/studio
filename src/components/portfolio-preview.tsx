@@ -13,12 +13,22 @@ interface PortfolioPreviewProps {
     portfolio: PortfolioData;
 }
 
+const parseImageUrl = (url: string) => {
+    if (typeof url !== 'string') return { src: 'https://placehold.co/128x128.png', hint: 'placeholder' };
+    const parts = url.split('"');
+    const src = parts[0];
+    const hint = parts[1]?.includes('data-ai-hint=') ? parts[1].split('=')[1].replace(/"/g, '') : 'placeholder';
+    return { src, hint };
+}
+
 export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
+    const { src: avatarSrc, hint: avatarHint } = parseImageUrl(portfolio.avatarUrl);
+
     return (
         <div className="font-body text-gray-800 bg-white">
             <header className="flex flex-col md:flex-row items-center gap-8 mb-12 text-center md:text-left">
                 <Avatar className="w-32 h-32 text-6xl border-4 border-primary/10 shadow-md">
-                    <AvatarImage src={portfolio.avatarUrl} data-ai-hint="professional portrait" />
+                    <AvatarImage src={avatarSrc} data-ai-hint={avatarHint} />
                     <AvatarFallback>{portfolio.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
@@ -47,36 +57,39 @@ export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
                 <section>
                     <h2 className="text-2xl font-bold font-headline mb-8 border-b-2 border-primary pb-2 text-gray-900">Projects</h2>
                     <div className="grid md:grid-cols-2 gap-8">
-                        {portfolio.projects.map(project => (
-                        <Card key={project.id} className="overflow-hidden group shadow-md hover:shadow-xl transition-shadow duration-300 border">
-                            <div className="aspect-video relative overflow-hidden">
-                                <Image 
-                                    src={project.imageUrl || 'https://placehold.co/400x300.png'} 
-                                    alt={project.name} 
-                                    layout="fill" 
-                                    objectFit="cover" 
-                                    data-ai-hint="software project"
-                                    className="group-hover:scale-105 transition-transform duration-300"
-                                />
-                            </div>
-                            <CardHeader>
-                                <h3 className="text-xl font-bold font-headline text-gray-900">{project.name}</h3>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-600 mb-4 min-h-[60px]">{project.description}</p>
-                                {project.link && (
-                                    <a 
-                                        href={project.link} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer" 
-                                        className="text-sm font-semibold text-accent hover:underline"
-                                    >
-                                        View Project &rarr;
-                                    </a>
-                                )}
-                            </CardContent>
-                        </Card>
-                        ))}
+                        {portfolio.projects.map(project => {
+                            const { src: projectImgSrc, hint: projectImgHint } = parseImageUrl(project.imageUrl);
+                            return (
+                                <Card key={project.id} className="overflow-hidden group shadow-md hover:shadow-xl transition-shadow duration-300 border">
+                                    <div className="aspect-video relative overflow-hidden">
+                                        <Image 
+                                            src={projectImgSrc || 'https://placehold.co/400x300.png'} 
+                                            alt={project.name} 
+                                            layout="fill" 
+                                            objectFit="cover" 
+                                            data-ai-hint={projectImgHint}
+                                            className="group-hover:scale-105 transition-transform duration-300"
+                                        />
+                                    </div>
+                                    <CardHeader>
+                                        <h3 className="text-xl font-bold font-headline text-gray-900">{project.name}</h3>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-gray-600 mb-4 min-h-[60px]">{project.description}</p>
+                                        {project.link && (
+                                            <a 
+                                                href={project.link} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer" 
+                                                className="text-sm font-semibold text-accent hover:underline"
+                                            >
+                                                View Project &rarr;
+                                            </a>
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            )
+                        })}
                     </div>
                 </section>
                 
@@ -106,7 +119,7 @@ export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
                         {portfolio.contact.github && (
                             <div className="flex items-center gap-3">
                                 <Github className="w-5 h-5 text-primary" />
-                                <a href={`https://${portfolio.contact.github}`} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">{portfolio.contact.github}</a>
+                                <a href={`https://www.github.com/${portfolio.contact.github}`} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">{portfolio.contact.github}</a>
                             </div>
                         )}
                     </div>

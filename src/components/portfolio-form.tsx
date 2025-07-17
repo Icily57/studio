@@ -18,6 +18,11 @@ interface PortfolioFormProps {
     setPortfolio: Dispatch<SetStateAction<PortfolioData>>;
 }
 
+const parseImageUrlSrc = (url: string) => {
+    if (typeof url !== 'string') return '';
+    return url.split('"')[0];
+}
+
 export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
     const { toast } = useToast();
 
@@ -63,7 +68,7 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
             id: new Date().getTime().toString(),
             name: 'New Project',
             description: 'A brief description of your project.',
-            imageUrl: 'https://placehold.co/400x300.png',
+            imageUrl: 'https://placehold.co/400x300.png" data-ai-hint="software project"',
             link: '#'
         };
         setPortfolio(prev => ({ ...prev, projects: [...prev.projects, newProject] }));
@@ -104,13 +109,13 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
                 <CardContent className="space-y-4">
                      <div className="flex items-center gap-4">
                         <Avatar className="w-20 h-20 text-3xl">
-                            <AvatarImage src={portfolio.avatarUrl} data-ai-hint="professional portrait" />
+                            <AvatarImage src={parseImageUrlSrc(portfolio.avatarUrl)} />
                             <AvatarFallback>{portfolio.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1 space-y-2">
                              <Label htmlFor="avatarUrl">Avatar URL</Label>
                              <div className="flex gap-2">
-                                <Input id="avatarUrl" placeholder="https://placehold.co/128x128.png" value={portfolio.avatarUrl} onChange={(e) => handleFieldChange('avatarUrl', e.target.value)} />
+                                <Input id="avatarUrl" placeholder="https://placehold.co/128x128.png" value={parseImageUrlSrc(portfolio.avatarUrl)} onChange={(e) => handleFieldChange('avatarUrl', e.target.value)} />
                                 <Button asChild variant="outline" size="icon">
                                     <Label htmlFor="avatar-upload" className="cursor-pointer">
                                         <Upload className="h-4 w-4"/>
@@ -182,7 +187,7 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
 
                                 <Label htmlFor={`project-img-url-${project.id}`}>Image URL</Label>
                                 <div className="flex gap-2">
-                                    <Input id={`project-img-url-${project.id}`} placeholder="Image URL" value={project.imageUrl} onChange={(e) => handleProjectChange(project.id, 'imageUrl', e.target.value)} />
+                                    <Input id={`project-img-url-${project.id}`} placeholder="Image URL" value={parseImageUrlSrc(project.imageUrl)} onChange={(e) => handleProjectChange(project.id, 'imageUrl', e.target.value)} />
                                     <Button asChild variant="outline" size="icon">
                                         <Label htmlFor={`project-img-upload-${project.id}`} className="cursor-pointer">
                                             <Upload className="h-4 w-4"/>
