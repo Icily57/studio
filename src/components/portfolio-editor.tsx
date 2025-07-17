@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { PortfolioData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Download, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2 } from 'lucide-react';
+import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
@@ -37,6 +37,7 @@ export function PortfolioEditor() {
   const [portfolio, setPortfolio] = useState<PortfolioData>(initialData);
   const [isAiSheetOpen, setIsAiSheetOpen] = useState(false);
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
+  const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const handleTemplateSelect = (template: PortfolioData) => {
@@ -48,7 +49,10 @@ export function PortfolioEditor() {
   const handleExport = (format: 'pdf' | 'png' | 'jpeg' | 'doc') => {
     toast({ title: "Exporting...", description: `Your portfolio is being exported as a ${format.toUpperCase()} file.`});
     const element = document.getElementById('portfolio-preview');
-    if (!element) return;
+    if (!element) {
+        toast({ title: "Export failed", description: "Preview element not found.", variant: 'destructive'});
+        return;
+    }
 
     if (format === 'pdf') exportAsPDF(element, 'portfolio.pdf');
     if (format === 'png') exportAsPNG(element, 'portfolio.png');
@@ -79,6 +83,10 @@ GitHub: ${portfolio.contact.github}
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold font-headline text-primary">Portfolio Builder</h1>
         <div className="flex items-center gap-2 flex-wrap justify-center">
+          <Button variant="outline" className="lg:hidden" onClick={() => setIsPreviewDialogOpen(true)}>
+            <Eye className="mr-2 h-4 w-4" />
+            Preview
+          </Button>
           <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline"><LayoutTemplate className="mr-2 h-4 w-4" />Templates</Button>
@@ -134,13 +142,13 @@ GitHub: ${portfolio.contact.github}
         </div>
       </div>
       <div className="grid lg:grid-cols-[40%_60%] gap-8 items-start">
-        <ScrollArea className="h-[calc(100vh-10rem)] rounded-lg">
+        <ScrollArea className="h-[calc(100vh-12rem)] rounded-lg">
            <PortfolioForm portfolio={portfolio} setPortfolio={setPortfolio} />
         </ScrollArea>
         <div className="hidden lg:block sticky top-24">
             <h2 className="text-lg font-semibold font-headline mb-4 text-primary">Live Preview</h2>
             <Card className="shadow-lg border-2">
-                <ScrollArea className="h-[calc(100vh-12rem)]">
+                <ScrollArea className="h-[calc(100vh-14rem)]">
                     <div id="portfolio-preview" className="bg-white p-4 sm:p-8">
                         <PortfolioPreview portfolio={portfolio} />
                     </div>
@@ -150,6 +158,21 @@ GitHub: ${portfolio.contact.github}
       </div>
 
       <AiAdvisorSheet open={isAiSheetOpen} onOpenChange={setIsAiSheetOpen} portfolioContent={getPortfolioContentAsString()} />
+      
+      <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[90vh] flex flex-col p-0">
+          <DialogHeader className="p-4 border-b">
+            <DialogTitle>Live Preview</DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 min-h-0">
+            <ScrollArea className="h-full">
+              <div id="portfolio-preview-mobile" className="bg-white p-4 sm:p-8">
+                  <PortfolioPreview portfolio={portfolio} />
+              </div>
+            </ScrollArea>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
