@@ -6,6 +6,30 @@ export interface Project {
   link: string;
 }
 
+export interface Experience {
+  id: string;
+  title: string;
+  company: string;
+  date: string;
+  description: string;
+}
+
+export interface Education {
+  id: string;
+  institution: string;
+  degree: string;
+  date: string;
+  description: string;
+}
+
+export interface Award {
+  id: string;
+  name: string;
+  issuer: string;
+  date: string;
+  description: string;
+}
+
 export interface PortfolioData {
   name: string;
   title: string;
@@ -13,6 +37,9 @@ export interface PortfolioData {
   about: string;
   skills: string[];
   projects: Project[];
+  experience: Experience[];
+  education: Education[];
+  awards: Award[];
   contact: {
     email: string;
     phone: string;

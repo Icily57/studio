@@ -2,7 +2,7 @@
 'use client';
 
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import type { PortfolioData, Project } from '@/types';
+import type { PortfolioData, Project, Experience, Education, Award } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -50,6 +50,34 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
           projects: prev.projects.map(p => p.id === projectId ? {...p, [field]: value} : p),
         }));
     };
+    
+    const handleItemChange = <T extends { id: string }>(
+      list: keyof PortfolioData,
+      itemId: string,
+      field: keyof T,
+      value: string
+    ) => {
+      setPortfolio(prev => {
+        const updatedList = (prev[list] as T[]).map(item =>
+          item.id === itemId ? { ...item, [field]: value } : item
+        );
+        return { ...prev, [list]: updatedList };
+      });
+    };
+    
+    const addItem = <T,>(list: keyof PortfolioData, newItem: T) => {
+      setPortfolio(prev => ({
+        ...prev,
+        [list]: [...(prev[list] as T[]), newItem]
+      }));
+    };
+
+    const removeItem = (list: keyof PortfolioData, itemId: string) => {      
+      setPortfolio(prev => {
+          const currentList = prev[list] as Array<{id: string}>;
+          return { ...prev, [list]: currentList.filter(p => p.id !== itemId) };
+      });
+    };
 
     const addSkill = () => {
         const newSkill = `New Skill`;
@@ -74,6 +102,10 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
     }
 
     const addProject = () => {
+        if (portfolio.projects.length >= 6) {
+            toast({ title: "Project limit reached", description: "You can add a maximum of 6 projects.", variant: "destructive" });
+            return;
+        }
         const newProject: Project = {
             id: new Date().getTime().toString(),
             name: 'New Project',
@@ -81,11 +113,40 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
             imageUrl: 'https://placehold.co/400x300.png" data-ai-hint="software project"',
             link: '#'
         };
-        setPortfolio(prev => ({ ...prev, projects: [...prev.projects, newProject] }));
+        addItem('projects', newProject);
     }
 
-    const removeProject = (projectId: string) => {
-        setPortfolio(prev => ({ ...prev, projects: prev.projects.filter(p => p.id !== projectId) }));
+    const addExperience = () => {
+      const newExperience: Experience = {
+        id: new Date().getTime().toString(),
+        title: 'Job Title',
+        company: 'Company Name',
+        date: 'Year - Year',
+        description: 'Key responsibilities and achievements.'
+      };
+      addItem('experience', newExperience);
+    }
+    
+    const addEducation = () => {
+      const newEducation: Education = {
+        id: new Date().getTime().toString(),
+        institution: 'University Name',
+        degree: 'Degree or Certificate',
+        date: 'Year - Year',
+        description: 'Relevant coursework or honors.'
+      };
+      addItem('education', newEducation);
+    }
+
+    const addAward = () => {
+      const newAward: Award = {
+        id: new Date().getTime().toString(),
+        name: 'Award Name',
+        issuer: 'Issuing Organization',
+        date: 'Year',
+        description: 'A brief description of the award.'
+      };
+      addItem('awards', newAward);
     }
 
     const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, callback: (dataUrl: string) => void) => {
@@ -282,6 +343,60 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
                     <Textarea className="min-h-[120px]" value={portfolio.about} onChange={(e) => handleFieldChange('about', e.target.value)} />
                 </CardContent>
             </Card>
+            
+            <Card>
+                <CardHeader>
+                    <CardTitle>Work Experience</CardTitle>
+                    <CardDescription>Detail your professional history.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {portfolio.experience.map(exp => (
+                        <Card key={exp.id} className="relative p-4">
+                             <button onClick={() => removeItem('experience', exp.id)} className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center hover:bg-destructive/80 transition-colors">
+                                <Trash2 className="w-4 h-4"/>
+                            </button>
+                            <div className="space-y-2">
+                                <Label htmlFor={`exp-title-${exp.id}`}>Job Title</Label>
+                                <Input id={`exp-title-${exp.id}`} value={exp.title} onChange={(e) => handleItemChange('experience', exp.id, 'title', e.target.value)} />
+                                <Label htmlFor={`exp-company-${exp.id}`}>Company</Label>
+                                <Input id={`exp-company-${exp.id}`} value={exp.company} onChange={(e) => handleItemChange('experience', exp.id, 'company', e.target.value)} />
+                                <Label htmlFor={`exp-date-${exp.id}`}>Date</Label>
+                                <Input id={`exp-date-${exp.id}`} value={exp.date} onChange={(e) => handleItemChange('experience', exp.id, 'date', e.target.value)} />
+                                <Label htmlFor={`exp-desc-${exp.id}`}>Description</Label>
+                                <Textarea id={`exp-desc-${exp.id}`} className="min-h-[80px]" value={exp.description} onChange={(e) => handleItemChange('experience', exp.id, 'description', e.target.value)} />
+                            </div>
+                        </Card>
+                    ))}
+                    <Button variant="outline" onClick={addExperience} className="w-full"><Plus className="h-4 w-4 mr-2" />Add Experience</Button>
+                </CardContent>
+            </Card>
+            
+             <Card>
+                <CardHeader>
+                    <CardTitle>Education</CardTitle>
+                    <CardDescription>List your academic background.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {portfolio.education.map(edu => (
+                        <Card key={edu.id} className="relative p-4">
+                             <button onClick={() => removeItem('education', edu.id)} className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center hover:bg-destructive/80 transition-colors">
+                                <Trash2 className="w-4 h-4"/>
+                            </button>
+                            <div className="space-y-2">
+                                <Label htmlFor={`edu-institution-${edu.id}`}>Institution</Label>
+                                <Input id={`edu-institution-${edu.id}`} value={edu.institution} onChange={(e) => handleItemChange('education', edu.id, 'institution', e.target.value)} />
+                                <Label htmlFor={`edu-degree-${edu.id}`}>Degree / Certificate</Label>
+                                <Input id={`edu-degree-${edu.id}`} value={edu.degree} onChange={(e) => handleItemChange('education', edu.id, 'degree', e.target.value)} />
+                                <Label htmlFor={`edu-date-${edu.id}`}>Date</Label>
+                                <Input id={`edu-date-${edu.id}`} value={edu.date} onChange={(e) => handleItemChange('education', edu.id, 'date', e.target.value)} />
+                                <Label htmlFor={`edu-desc-${edu.id}`}>Description</Label>
+                                <Textarea id={`edu-desc-${edu.id}`} className="min-h-[60px]" value={edu.description} onChange={(e) => handleItemChange('education', edu.id, 'description', e.target.value)} />
+                            </div>
+                        </Card>
+                    ))}
+                    <Button variant="outline" onClick={addEducation} className="w-full"><Plus className="h-4 w-4 mr-2" />Add Education</Button>
+                </CardContent>
+            </Card>
 
             <Card>
                 <CardHeader>
@@ -306,12 +421,12 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
             <Card>
                 <CardHeader>
                     <CardTitle>Projects</CardTitle>
-                    <CardDescription>Showcase your best work.</CardDescription>
+                    <CardDescription>Showcase your best work. You can add up to 6 projects.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {portfolio.projects.map(project => (
                         <Card key={project.id} className="relative p-4">
-                             <button onClick={() => removeProject(project.id)} className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center hover:bg-destructive/80 transition-colors">
+                             <button onClick={() => removeItem('projects', project.id)} className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center hover:bg-destructive/80 transition-colors">
                                 <Trash2 className="w-4 h-4"/>
                             </button>
                             <div className="space-y-2">
@@ -345,6 +460,33 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
                         </Card>
                     ))}
                     <Button variant="outline" onClick={addProject} className="w-full"><Plus className="h-4 w-4 mr-2" />Add Project</Button>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Awards & Certifications</CardTitle>
+                    <CardDescription>Highlight your accomplishments.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {portfolio.awards.map(award => (
+                        <Card key={award.id} className="relative p-4">
+                             <button onClick={() => removeItem('awards', award.id)} className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full w-6 h-6 flex items-center justify-center hover:bg-destructive/80 transition-colors">
+                                <Trash2 className="w-4 h-4"/>
+                            </button>
+                            <div className="space-y-2">
+                                <Label htmlFor={`award-name-${award.id}`}>Award/Certification Name</Label>
+                                <Input id={`award-name-${award.id}`} value={award.name} onChange={(e) => handleItemChange('awards', award.id, 'name', e.target.value)} />
+                                <Label htmlFor={`award-issuer-${award.id}`}>Issuer</Label>
+                                <Input id={`award-issuer-${award.id}`} value={award.issuer} onChange={(e) => handleItemChange('awards', award.id, 'issuer', e.target.value)} />
+                                <Label htmlFor={`award-date-${award.id}`}>Date</Label>
+                                <Input id={`award-date-${award.id}`} value={award.date} onChange={(e) => handleItemChange('awards', award.id, 'date', e.target.value)} />
+                                <Label htmlFor={`award-desc-${award.id}`}>Description</Label>
+                                <Textarea id={`award-desc-${award.id}`} className="min-h-[60px]" value={award.description} onChange={(e) => handleItemChange('awards', award.id, 'description', e.target.value)} />
+                            </div>
+                        </Card>
+                    ))}
+                    <Button variant="outline" onClick={addAward} className="w-full"><Plus className="h-4 w-4 mr-2" />Add Award</Button>
                 </CardContent>
             </Card>
 

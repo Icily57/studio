@@ -8,7 +8,6 @@
  */
 
 import { ai } from '@/ai/genkit';
-import type { Project } from '@/types';
 import { z } from 'zod';
 
 const ProjectSchema = z.object({
@@ -22,6 +21,31 @@ const ProjectSchema = z.object({
     ),
   link: z.string().describe('A URL to the project, or "#" if not available.'),
 });
+
+const ExperienceSchema = z.object({
+    id: z.string().describe('A unique identifier for the experience.'),
+    title: z.string().describe('The job title.'),
+    company: z.string().describe('The name of the company.'),
+    date: z.string().describe('The start and end dates of the employment (e.g., "2020 - Present").'),
+    description: z.string().describe('A brief description of the role and accomplishments.'),
+});
+
+const EducationSchema = z.object({
+    id: z.string().describe('A unique identifier for the education entry.'),
+    institution: z.string().describe('The name of the educational institution.'),
+    degree: z.string().describe('The degree or certificate obtained.'),
+    date: z.string().describe('The start and end dates of the education (e.g., "2014 - 2018").'),
+    description: z.string().describe('Any relevant details, like honors or focus of study.'),
+});
+
+const AwardSchema = z.object({
+    id: z.string().describe('A unique identifier for the award entry.'),
+    name: z.string().describe('The name of the award or certification.'),
+    issuer: z.string().describe('The organization that issued the award.'),
+    date: z.string().describe('The date the award was received.'),
+    description: z.string().describe('A brief description of the award.'),
+});
+
 
 const ImportPortfolioInputSchema = z.object({
   fileDataUri: z
@@ -39,6 +63,9 @@ const ImportPortfolioOutputSchema = z.object({
   about: z.string().describe("A professional summary about the portfolio owner."),
   skills: z.array(z.string()).describe("A list of key skills."),
   projects: z.array(ProjectSchema).describe("A list of up to 4 key projects."),
+  experience: z.array(ExperienceSchema).describe("A list of professional work experiences."),
+  education: z.array(EducationSchema).describe("A list of academic qualifications."),
+  awards: z.array(AwardSchema).describe("A list of awards and certifications."),
   contact: z.object({
     email: z.string().describe("Contact email address."),
     phone: z.string().describe("Contact phone number."),
@@ -68,6 +95,7 @@ File:
 - Write a professional "About Me" summary based on the content.
 - List the key skills mentioned.
 - Identify up to 4 main projects. For each project, provide a name, a brief description, a placeholder image URL ('https://placehold.co/400x300.png' with a relevant data-ai-hint), and a link if available (use '#' if not).
+- Extract work experience, education history, and any awards or certifications.
 - Extract contact information: email, phone, LinkedIn, and GitHub. If a piece of contact information is not present, return an empty string for it.
 - For the avatar, use 'https://placehold.co/128x128.png' with the data-ai-hint "user avatar".`,
 });

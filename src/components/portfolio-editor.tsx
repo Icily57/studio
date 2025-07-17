@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { PortfolioData } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
@@ -16,6 +16,7 @@ import { PortfolioPreview } from './portfolio-preview';
 import { PortfolioForm } from './portfolio-form';
 import { ImportDialog } from './import-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 
 const initialData: PortfolioData = {
@@ -27,6 +28,16 @@ const initialData: PortfolioData = {
   projects: [
     { id: '1', name: 'E-commerce Platform', description: 'A full-featured e-commerce site with a custom CMS.', imageUrl: 'https://placehold.co/400x300.png" data-ai-hint="online store"', link: '#' },
     { id: '2', name: 'Project Management Tool', description: 'A SaaS application to help teams manage tasks and projects.', imageUrl: 'https://placehold.co/400x300.png" data-ai-hint="task management"', link: '#' },
+  ],
+  experience: [
+      { id: '1', title: 'Senior Software Engineer', company: 'Tech Solutions Inc.', date: '2020 - Present', description: 'Leading development of key features for a flagship product, mentoring junior developers, and improving system architecture.'},
+      { id: '2', title: 'Software Engineer', company: 'Innovate Co.', date: '2018 - 2020', description: 'Developed and maintained web applications using React and Node.js. Collaborated with cross-functional teams to deliver high-quality software.'},
+  ],
+  education: [
+      { id: '1', institution: 'University of Technology', degree: 'B.S. in Computer Science', date: '2014 - 2018', description: 'Graduated with honors. Focused on software development and artificial intelligence.'},
+  ],
+  awards: [
+      { id: '1', name: 'Developer of the Year', issuer: 'Tech Solutions Inc.', date: '2022', description: 'Awarded for outstanding contributions to the company\'s flagship product.' },
   ],
   contact: {
     email: 'alex.doe@example.com',
@@ -83,6 +94,12 @@ About: ${portfolio.about}
 Skills: ${portfolio.skills.join(', ')}
 Projects:
 ${portfolio.projects.map(p => `- ${p.name}: ${p.description}`).join('\n')}
+Experience:
+${portfolio.experience.map(e => `- ${e.title} at ${e.company} (${e.date}): ${e.description}`).join('\n')}
+Education:
+${portfolio.education.map(e => `- ${e.degree} from ${e.institution} (${e.date}): ${e.description}`).join('\n')}
+Awards:
+${portfolio.awards.map(a => `- ${a.name} from ${a.issuer} (${a.date}): ${a.description}`).join('\n')}
 Contact:
 Email: ${portfolio.contact.email}
 Phone: ${portfolio.contact.phone}

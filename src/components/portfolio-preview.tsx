@@ -1,13 +1,14 @@
 // This is a new file
 'use client';
 
+import * as React from 'react';
 import type { PortfolioData } from '@/types';
 import Image from 'next/image';
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader } from './ui/card';
 import { Separator } from './ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Mail, Phone, Linkedin, Github } from 'lucide-react';
+import { Mail, Phone, Linkedin, Github, Award, Briefcase, GraduationCap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PortfolioPreviewProps {
@@ -37,9 +38,8 @@ const headlineFontClasses = {
 }
 
 const Section = ({ title, className, children, ...props }: { title: string, className?: string, children: React.ReactNode }) => {
-    const { font } = usePortfolioContext();
+    const { font, themeColor } = usePortfolioContext();
     const headlineFontClass = headlineFontClasses[font] || 'font-sans';
-    const { themeColor } = usePortfolioContext();
 
     return (
         <section className={cn("mb-10", className)} {...props}>
@@ -61,7 +61,7 @@ const ContactInfo = () => {
             {portfolio.contact.email && (
                 <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5" style={{ color: themeColor }} />
-                    <a href={`mailto:${portfolio.contact.email}`} className="hover:underline" style={{ color: themeColor }}>{portfolio.contact.email}</a>
+                    <a href={`mailto:${portfolio.contact.email}`} className="hover:underline break-all" style={{ color: themeColor }}>{portfolio.contact.email}</a>
                 </div>
             )}
             {portfolio.contact.phone && (
@@ -73,13 +73,13 @@ const ContactInfo = () => {
             {portfolio.contact.linkedin && (
                 <div className="flex items-center gap-3">
                     <Linkedin className="w-5 h-5" style={{ color: themeColor }} />
-                    <a href={`https://${portfolio.contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: themeColor }}>{portfolio.contact.linkedin}</a>
+                    <a href={`https://${portfolio.contact.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:underline break-all" style={{ color: themeColor }}>{portfolio.contact.linkedin}</a>
                 </div>
             )}
             {portfolio.contact.github && (
                 <div className="flex items-center gap-3">
                     <Github className="w-5 h-5" style={{ color: themeColor }} />
-                    <a href={`https://www.github.com/${portfolio.contact.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: themeColor }}>{portfolio.contact.github}</a>
+                    <a href={`https://www.github.com/${portfolio.contact.github}`} target="_blank" rel="noopener noreferrer" className="hover:underline break-all" style={{ color: themeColor }}>{portfolio.contact.github}</a>
                 </div>
             )}
         </div>
@@ -103,6 +103,63 @@ const SkillsSection = () => {
         </div>
     )
 }
+
+const ExperienceSection = () => {
+    const { portfolio, font } = usePortfolioContext();
+    const headlineFontClass = headlineFontClasses[font] || 'font-sans';
+    return (
+        <div className="space-y-6 relative pl-5 border-l-2 border-gray-200">
+            {portfolio.experience.map(exp => (
+                <div key={exp.id} className="relative">
+                     <div className="absolute -left-[29px] top-1 h-3 w-3 rounded-full bg-gray-400"></div>
+                     <p className="font-semibold text-gray-500 text-sm">{exp.date}</p>
+                     <h3 className={cn("text-lg font-bold text-gray-900 mt-1", headlineFontClass)}>{exp.title}</h3>
+                     <h4 className="font-semibold text-gray-700">{exp.company}</h4>
+                     <p className="text-gray-600 mt-2 whitespace-pre-line">{exp.description}</p>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+const EducationSection = () => {
+    const { portfolio, font } = usePortfolioContext();
+    const headlineFontClass = headlineFontClasses[font] || 'font-sans';
+    return (
+        <div className="space-y-6 relative pl-5 border-l-2 border-gray-200">
+            {portfolio.education.map(edu => (
+                <div key={edu.id} className="relative">
+                    <div className="absolute -left-[29px] top-1 h-3 w-3 rounded-full bg-gray-400"></div>
+                    <p className="font-semibold text-gray-500 text-sm">{edu.date}</p>
+                    <h3 className={cn("text-lg font-bold text-gray-900 mt-1", headlineFontClass)}>{edu.degree}</h3>
+                    <h4 className="font-semibold text-gray-700">{edu.institution}</h4>
+                    <p className="text-gray-600 mt-2 whitespace-pre-line">{edu.description}</p>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+const AwardsSection = () => {
+    const { portfolio, font } = usePortfolioContext();
+    const headlineFontClass = headlineFontClasses[font] || 'font-sans';
+    return (
+        <div className="space-y-6">
+            {portfolio.awards.map(award => (
+                <div key={award.id}>
+                    <h3 className={cn("text-lg font-bold text-gray-900", headlineFontClass)}>{award.name}</h3>
+                    <div className="flex items-center gap-2">
+                      <p className="font-semibold text-gray-700">{award.issuer}</p>
+                      <span className="text-gray-500">•</span>
+                      <p className="text-gray-500">{award.date}</p>
+                    </div>
+                    <p className="text-gray-600 mt-1 whitespace-pre-line">{award.description}</p>
+                </div>
+            ))}
+        </div>
+    )
+}
+
 
 const ProjectsSection = () => {
     const { portfolio, themeColor, font } = usePortfolioContext();
@@ -165,12 +222,18 @@ const ClassicTopLayout = () => {
                 </div>
             </header>
             
-            <main className="p-4">
-                <Section title="About Me"><AboutSection /></Section>
-                <Section title="Skills"><SkillsSection /></Section>
-                <Section title="Projects"><ProjectsSection /></Section>
-                <Separator className="my-12 bg-gray-200" />
-                <Section title="Contact Me"><ContactInfo /></Section>
+            <main className="p-4 grid md:grid-cols-[1fr_2fr] gap-12">
+                <aside>
+                    <Section title="Contact"><ContactInfo /></Section>
+                    {portfolio.skills.length > 0 && <Section title="Skills"><SkillsSection /></Section>}
+                </aside>
+                <main>
+                    <Section title="About Me"><AboutSection /></Section>
+                    {portfolio.experience.length > 0 && <Section title="Experience"><ExperienceSection /></Section>}
+                    {portfolio.education.length > 0 && <Section title="Education"><EducationSection /></Section>}
+                    {portfolio.projects.length > 0 && <Section title="Projects"><ProjectsSection /></Section>}
+                    {portfolio.awards.length > 0 && <Section title="Awards"><AwardsSection /></Section>}
+                </main>
             </main>
         </>
     )
@@ -194,12 +257,15 @@ const ModernLeftLayout = () => {
                 <Separator className="my-8 bg-gray-200" />
                 <div>
                      <Section title="Contact"><ContactInfo /></Section>
-                     <Section title="Skills"><SkillsSection /></Section>
+                     {portfolio.skills.length > 0 && <Section title="Skills"><SkillsSection /></Section>}
+                     {portfolio.education.length > 0 && <Section title="Education"><EducationSection /></Section>}
+                     {portfolio.awards.length > 0 && <Section title="Awards"><AwardsSection /></Section>}
                 </div>
             </aside>
              <main>
                 <Section title="About Me"><AboutSection /></Section>
-                <Section title="Projects"><ProjectsSection /></Section>
+                {portfolio.experience.length > 0 && <Section title="Experience"><ExperienceSection /></Section>}
+                {portfolio.projects.length > 0 && <Section title="Projects"><ProjectsSection /></Section>}
             </main>
         </div>
     )
@@ -224,9 +290,14 @@ const CenteredMinimalLayout = () => {
             </header>
              <main>
                 <Section title="About Me" className="text-left"><AboutSection /></Section>
-                <Section title="Projects"><ProjectsSection /></Section>
+                {portfolio.experience.length > 0 && <Section title="Experience" className="text-left"><ExperienceSection /></Section>}
+                {portfolio.projects.length > 0 && <Section title="Projects"><ProjectsSection /></Section>}
                 <Separator className="my-12 bg-gray-200" />
-                <Section title="Skills"><SkillsSection /></Section>
+                <div className="grid md:grid-cols-2 gap-8 text-left">
+                  {portfolio.education.length > 0 && <Section title="Education"><EducationSection /></Section>}
+                  {portfolio.skills.length > 0 && <Section title="Skills"><SkillsSection /></Section>}
+                </div>
+                 {portfolio.awards.length > 0 && <Section title="Awards" className="text-left"><AwardsSection /></Section>}
                  <Separator className="my-12 bg-gray-200" />
                 <Section title="Contact Me"><ContactInfo /></Section>
             </main>
