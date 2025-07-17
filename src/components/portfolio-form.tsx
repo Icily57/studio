@@ -73,7 +73,7 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
         setPortfolio(prev => ({ ...prev, projects: prev.projects.filter(p => p.id !== projectId) }));
     }
 
-    const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, callback: (dataUrl: string) => void) => {
         const file = e.target.files?.[0];
         if (file) {
             if (file.size > 2 * 1024 * 1024) { // 2MB limit
@@ -87,7 +87,7 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
             const reader = new FileReader();
             reader.onload = (loadEvent) => {
                 if(loadEvent.target?.result) {
-                    handleFieldChange('avatarUrl', loadEvent.target.result as string);
+                    callback(loadEvent.target.result as string);
                 }
             };
             reader.readAsDataURL(file);
@@ -117,7 +117,7 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
                                         <span className="sr-only">Upload Photo</span>
                                     </Label>
                                 </Button>
-                                <Input type="file" id="avatar-upload" className="hidden" accept="image/*" onChange={handleAvatarUpload} />
+                                <Input type="file" id="avatar-upload" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, (dataUrl) => handleFieldChange('avatarUrl', dataUrl))} />
                              </div>
                         </div>
                     </div>
@@ -180,8 +180,23 @@ export function PortfolioForm({ portfolio, setPortfolio }: PortfolioFormProps) {
                                 <Label htmlFor={`project-desc-${project.id}`}>Description</Label>
                                 <Textarea id={`project-desc-${project.id}`} className="min-h-[80px] mb-2" value={project.description} onChange={(e) => handleProjectChange(project.id, 'description', e.target.value)} />
 
-                                <Label htmlFor={`project-img-${project.id}`}>Image URL</Label>
-                                <Input id={`project-img-${project.id}`} placeholder="Image URL" value={project.imageUrl} onChange={(e) => handleProjectChange(project.id, 'imageUrl', e.target.value)} />
+                                <Label htmlFor={`project-img-url-${project.id}`}>Image URL</Label>
+                                <div className="flex gap-2">
+                                    <Input id={`project-img-url-${project.id}`} placeholder="Image URL" value={project.imageUrl} onChange={(e) => handleProjectChange(project.id, 'imageUrl', e.target.value)} />
+                                    <Button asChild variant="outline" size="icon">
+                                        <Label htmlFor={`project-img-upload-${project.id}`} className="cursor-pointer">
+                                            <Upload className="h-4 w-4"/>
+                                            <span className="sr-only">Upload Project Image</span>
+                                        </Label>
+                                    </Button>
+                                    <Input 
+                                        type="file" 
+                                        id={`project-img-upload-${project.id}`} 
+                                        className="hidden" 
+                                        accept="image/*" 
+                                        onChange={(e) => handleImageUpload(e, (dataUrl) => handleProjectChange(project.id, 'imageUrl', dataUrl))}
+                                    />
+                                </div>
                                 
                                 <Label htmlFor={`project-link-${project.id}`}>Project Link</Label>
                                 <Input id={`project-link-${project.id}`} placeholder="Project Link" value={project.link} onChange={(e) => handleProjectChange(project.id, 'link', e.target.value)} />
