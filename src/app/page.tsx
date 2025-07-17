@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Bot, Download, FileEdit, Palette } from "lucide-react";
+import { ArrowRight, Bot, Download, FileEdit } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,21 +22,23 @@ export default function Home() {
         </nav>
       </header>
       <main className="flex-1">
-        <section className="w-full py-20 md:py-32 lg:py-40 xl:py-48 relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/80 to-background z-0"></div>
+        <section className="w-full py-20 md:py-32 lg:py-40 xl:py-48 relative overflow-hidden">
+          <div className="absolute inset-0 bg-background z-0">
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(40,98,255,0.15),_transparent_40%)]"></div>
+          </div>
           <div className="container px-4 md:px-6 z-10 relative">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:gap-24 items-center">
-              <div className="flex flex-col justify-center space-y-4 text-primary-foreground">
+              <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-background">
+                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-foreground">
                     Craft Your Professional Story with FolioForge
                   </h1>
-                  <p className="max-w-[600px] text-primary-foreground/80 md:text-xl">
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
                     Build, refine, and export beautiful portfolios with the power of AI. From developers to designers, make your first impression count.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
                     <Link
                       href="/dashboard"
                     >
@@ -47,7 +49,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="w-full max-w-md mx-auto">
-                <Card className="shadow-2xl rounded-lg overflow-hidden border-4 border-background/20">
+                <Card className="shadow-2xl rounded-lg overflow-hidden border-2 border-primary/10 bg-card/60 backdrop-blur-lg">
                     <CardHeader>
                         <CardTitle className="font-headline text-lg">Alex Doe</CardTitle>
                         <p className="text-sm text-accent">Full-Stack Developer</p>
@@ -68,7 +70,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-secondary/20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -84,8 +86,8 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:max-w-none mt-12">
-              <div className="grid gap-2 text-center">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
+              <div className="grid gap-2 text-center p-6 rounded-lg bg-card/60 backdrop-blur-sm border border-primary/10 shadow-lg transition-transform hover:scale-105">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-foreground mb-4">
                       <Bot className="h-8 w-8" />
                   </div>
                   <h3 className="text-xl font-bold font-headline">AI Portfolio Advisor</h3>
@@ -93,8 +95,8 @@ export default function Home() {
                     Get AI-powered suggestions to improve content, fill in gaps, and make your portfolio more compelling.
                   </p>
               </div>
-              <div className="grid gap-2 text-center">
-                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
+              <div className="grid gap-2 text-center p-6 rounded-lg bg-card/60 backdrop-blur-sm border border-primary/10 shadow-lg transition-transform hover:scale-105">
+                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-foreground mb-4">
                       <FileEdit className="h-8 w-8" />
                   </div>
                   <h3 className="text-xl font-bold font-headline">Intuitive Editor</h3>
@@ -102,8 +104,8 @@ export default function Home() {
                     Easily edit your portfolio content with a simple and powerful form-based editor.
                   </p>
               </div>
-              <div className="grid gap-2 text-center">
-                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
+              <div className="grid gap-2 text-center p-6 rounded-lg bg-card/60 backdrop-blur-sm border border-primary/10 shadow-lg transition-transform hover:scale-105">
+                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent text-accent-foreground mb-4">
                       <Download className="h-8 w-8" />
                   </div>
                   <h3 className="text-xl font-bold font-headline">Multiple Export Formats</h3>
@@ -115,8 +117,8 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 bg-primary text-primary-foreground">
-        <p className="text-xs text-primary-foreground/80">
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 bg-secondary/50 text-secondary-foreground border-t">
+        <p className="text-xs text-muted-foreground">
           &copy; {new Date().getFullYear()} FolioForge. All rights reserved.
         </p>
       </footer>

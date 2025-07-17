@@ -81,7 +81,7 @@ GitHub: ${portfolio.contact.github}
   return (
     <>
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-        <h1 className="text-2xl font-bold font-headline text-primary">Portfolio Builder</h1>
+        <h1 className="text-2xl font-bold font-headline text-foreground">Portfolio Builder</h1>
         <div className="flex items-center gap-2 flex-wrap justify-center">
           <Button variant="outline" className="lg:hidden" onClick={() => setIsPreviewDialogOpen(true)}>
             <Eye className="mr-2 h-4 w-4" />
@@ -92,7 +92,7 @@ GitHub: ${portfolio.contact.github}
             <DialogTrigger asChild>
               <Button variant="outline"><LayoutTemplate className="mr-2 h-4 w-4" />Templates</Button>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
+            <DialogContent className="max-w-4xl h-[90vh] flex flex-col bg-card/80 backdrop-blur-xl">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-headline">Choose a Template</DialogTitle>
                 <p className="text-muted-foreground">Select a starting point for your portfolio. You can customize everything later.</p>
@@ -101,7 +101,7 @@ GitHub: ${portfolio.contact.github}
                 <ScrollArea className="h-full pr-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <Card
-                      className="cursor-pointer hover:shadow-lg hover:border-accent transition-all border-2 flex items-center justify-center p-6"
+                      className="cursor-pointer hover:shadow-lg hover:border-accent transition-all border-2 flex items-center justify-center p-6 bg-card/60"
                       onClick={() => handleTemplateSelect(initialData)}
                     >
                       <CardHeader className="text-center">
@@ -112,7 +112,7 @@ GitHub: ${portfolio.contact.github}
                     {templates.map(template => (
                       <Card
                         key={template.name}
-                        className="cursor-pointer hover:shadow-lg hover:border-accent transition-all border-2 flex flex-col justify-between p-6"
+                        className="cursor-pointer hover:shadow-lg hover:border-accent transition-all border-2 flex flex-col justify-between p-6 bg-card/60"
                         onClick={() => handleTemplateSelect(template.data)}
                       >
                         <CardHeader>
@@ -131,7 +131,7 @@ GitHub: ${portfolio.contact.github}
           <Button variant="outline" disabled><Upload className="mr-2 h-4 w-4" />Import</Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button><Download className="mr-2 h-4 w-4" />Export</Button>
+              <Button className="bg-accent text-accent-foreground hover:bg-accent/90"><Download className="mr-2 h-4 w-4" />Export</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => handleExport('pdf')}><FileText className="mr-2 h-4 w-4" />PDF</DropdownMenuItem>
@@ -143,11 +143,11 @@ GitHub: ${portfolio.contact.github}
         </div>
       </div>
       <div className="grid lg:grid-cols-[40%_60%] gap-8 items-start">
-        <ScrollArea className="h-[calc(100vh-12rem)] rounded-lg">
+        <ScrollArea className="h-[calc(100vh-12rem)] rounded-lg p-2 bg-secondary/20">
            <PortfolioForm portfolio={portfolio} setPortfolio={setPortfolio} />
         </ScrollArea>
         <div className="hidden lg:block sticky top-24">
-            <h2 className="text-lg font-semibold font-headline mb-4 text-primary">Live Preview</h2>
+            <h2 className="text-lg font-semibold font-headline mb-4 text-foreground">Live Preview</h2>
             <Card className="shadow-lg border-2">
                 <ScrollArea className="h-[calc(100vh-14rem)]">
                     <div id="portfolio-preview" className="bg-white p-4 sm:p-8">
