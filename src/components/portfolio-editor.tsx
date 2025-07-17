@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import type { PortfolioData } from '@/types';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
@@ -17,7 +17,6 @@ import { PortfolioPreview } from './portfolio-preview';
 import { PortfolioForm } from './portfolio-form';
 import { ImportDialog } from './import-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import Link from 'next/link';
@@ -266,3 +265,5 @@ GitHub: ${portfolio.contact.github}
     </>
   );
 }
+
+    
