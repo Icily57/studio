@@ -13,6 +13,9 @@ import { Badge } from './ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { designTemplates } from '@/lib/design-templates';
+import { cn } from '@/lib/utils';
+import { ScrollArea } from './ui/scroll-area';
 
 interface PortfolioFormProps {
     portfolio: PortfolioData;
@@ -104,14 +107,54 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
             reader.readAsDataURL(file);
         }
     };
+    
+    const handleDesignTemplateSelect = (template: { themeColor: string; font: PortfolioData['design']['font'] }) => {
+        setPortfolio(prev => ({
+            ...prev,
+            design: {
+                themeColor: template.themeColor,
+                font: template.font,
+            }
+        }));
+        toast({ title: "Design Applied!", description: "The new color and font have been applied." });
+    }
 
     if (tab === 'design') {
         return (
             <div className="space-y-6">
                  <Card>
                     <CardHeader>
-                        <CardTitle>Appearance</CardTitle>
-                        <CardDescription>Customize the look and feel of your portfolio.</CardDescription>
+                        <CardTitle>Design Templates</CardTitle>
+                        <CardDescription>Select a pre-defined style or create your own below.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                       <ScrollArea className="h-48">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pr-4">
+                                {designTemplates.map((template) => (
+                                    <div
+                                        key={template.name}
+                                        className="cursor-pointer group"
+                                        onClick={() => handleDesignTemplateSelect(template)}
+                                    >
+                                        <div 
+                                            className={cn("h-16 w-full rounded-md border-2 flex items-center justify-center transition-all",
+                                                portfolio.design.themeColor === template.themeColor && portfolio.design.font === template.font
+                                                    ? 'border-primary'
+                                                    : 'border-transparent group-hover:border-primary/50'
+                                            )}
+                                            style={{ backgroundColor: template.themeColor }}
+                                        />
+                                        <p className="text-xs font-medium text-center mt-2 text-muted-foreground group-hover:text-foreground">{template.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                       </ScrollArea>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Customize Appearance</CardTitle>
+                        <CardDescription>Fine-tune the look and feel of your portfolio.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
