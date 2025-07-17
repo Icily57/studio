@@ -8,11 +8,14 @@ import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader } from './ui/card';
 import { Separator } from './ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Mail, Phone, Linkedin, Github, Award, Briefcase, GraduationCap } from 'lucide-react';
+import { Mail, Phone, Linkedin, Github, Award, Briefcase, GraduationCap, Download, UserCircle, Grid } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
 interface PortfolioPreviewProps {
     portfolio: PortfolioData;
+    view?: 'editor' | 'projects' | 'about';
 }
 
 const parseImageUrl = (url: string) => {
@@ -160,13 +163,15 @@ const AwardsSection = () => {
     )
 }
 
-
-const ProjectsSection = () => {
+const ProjectsSection = ({ isPage = false }: { isPage?: boolean }) => {
     const { portfolio, themeColor, font } = usePortfolioContext();
     const headlineFontClass = headlineFontClasses[font] || 'font-sans';
+    
+    const projectsToShow = isPage ? portfolio.projects : portfolio.projects.slice(0, 4);
+
     return (
         <div className="grid md:grid-cols-2 gap-8">
-            {portfolio.projects.map(project => {
+            {projectsToShow.map(project => {
                 const { src: projectImgSrc, hint: projectImgHint } = parseImageUrl(project.imageUrl);
                 return (
                     <Card key={project.id} className="overflow-hidden group shadow-md hover:shadow-xl transition-shadow duration-300 border">
@@ -204,6 +209,7 @@ const ProjectsSection = () => {
     )
 }
 
+// Layout for the editor preview
 const ClassicTopLayout = () => {
     const { portfolio, themeColor, font } = usePortfolioContext();
     const headlineFontClass = headlineFontClasses[font] || 'font-sans';
@@ -239,6 +245,7 @@ const ClassicTopLayout = () => {
     )
 }
 
+// Layout for the editor preview
 const ModernLeftLayout = () => {
     const { portfolio, themeColor, font } = usePortfolioContext();
     const headlineFontClass = headlineFontClasses[font] || 'font-sans';
@@ -271,6 +278,7 @@ const ModernLeftLayout = () => {
     )
 }
 
+// Layout for the editor preview
 const CenteredMinimalLayout = () => {
     const { portfolio, themeColor, font } = usePortfolioContext();
     const headlineFontClass = headlineFontClasses[font] || 'font-sans';
@@ -305,6 +313,74 @@ const CenteredMinimalLayout = () => {
     )
 }
 
+const PublicHeader = ({ view }: { view: 'projects' | 'about' }) => {
+     const { portfolio, themeColor, font } = usePortfolioContext();
+     const headlineFontClass = headlineFontClasses[font] || 'font-sans';
+
+    return (
+        <header className="mb-12 flex justify-between items-center">
+            <div>
+                 <h1 className={cn("text-4xl lg:text-5xl font-bold text-gray-900", headlineFontClass)}>{portfolio.name}</h1>
+                 <p className="text-xl font-medium mt-1" style={{ color: themeColor }}>{portfolio.title}</p>
+            </div>
+            <nav className="flex items-center gap-2">
+                <Button asChild variant={view === 'projects' ? 'default' : 'ghost'} style={view === 'projects' ? {backgroundColor: themeColor} : {}}>
+                    <Link href={`/portfolio/123`}><Grid className="mr-2 h-4 w-4"/>Projects</Link>
+                </Button>
+                <Button asChild variant={view === 'about' ? 'default' : 'ghost'} style={view === 'about' ? {backgroundColor: themeColor} : {}}>
+                    <Link href={`/portfolio/123/about`}><UserCircle className="mr-2 h-4 w-4"/>About Me</Link>
+                </Button>
+            </nav>
+        </header>
+    )
+}
+
+const PublicProjectsView = () => (
+    <>
+        <PublicHeader view="projects" />
+        <main>
+            <ProjectsSection isPage={true} />
+        </main>
+    </>
+);
+
+const PublicAboutView = () => {
+    const { portfolio, themeColor } = usePortfolioContext();
+    return (
+        <>
+            <PublicHeader view="about" />
+            <main className="p-4">
+                 <div className="flex flex-col md:flex-row items-center gap-8 mb-12 text-center md:text-left p-8 rounded-lg bg-gray-50">
+                    <Avatar className="w-32 h-32 text-6xl border-4 border-white shadow-md">
+                        <AvatarImage src={parseImageUrl(portfolio.avatarUrl).src} />
+                        <AvatarFallback style={{ backgroundColor: themeColor }} className="text-white">{portfolio.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                       <Section title="About Me"><AboutSection /></Section>
+                       {portfolio.resumeUrl && (
+                           <Button asChild style={{backgroundColor: themeColor}}>
+                               <a href={portfolio.resumeUrl} download="resume.pdf"><Download className="mr-2 h-4 w-4"/>Download Resume</a>
+                           </Button>
+                       )}
+                    </div>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+                     <div className="space-y-8">
+                        {portfolio.experience.length > 0 && <Section title="Experience"><ExperienceSection /></Section>}
+                     </div>
+                     <div className="space-y-8">
+                        {portfolio.education.length > 0 && <Section title="Education"><EducationSection /></Section>}
+                        {portfolio.skills.length > 0 && <Section title="Skills"><SkillsSection /></Section>}
+                        {portfolio.awards.length > 0 && <Section title="Awards"><AwardsSection /></Section>}
+                        <Section title="Contact"><ContactInfo /></Section>
+                     </div>
+                </div>
+            </main>
+        </>
+    )
+};
+
 
 const PortfolioContext = React.createContext<{
     portfolio: PortfolioData;
@@ -320,7 +396,7 @@ const usePortfolioContext = () => {
     return context;
 };
 
-export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
+export function PortfolioPreview({ portfolio, view = 'editor' }: PortfolioPreviewProps) {
     const themeColor = portfolio.design.themeColor || '#0ea5e9';
     const fontClass = fontClasses[portfolio.design.font] || 'font-sans';
     
@@ -336,6 +412,14 @@ export function PortfolioPreview({ portfolio }: PortfolioPreviewProps) {
     };
     
     const renderLayout = () => {
+        if (view === 'projects') {
+            return <PublicProjectsView />;
+        }
+        if (view === 'about') {
+            return <PublicAboutView />;
+        }
+        
+        // Editor preview layouts
         switch (portfolio.design.layout) {
             case 'modern-left':
                 return <ModernLeftLayout />;

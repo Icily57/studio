@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { PortfolioData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2 } from 'lucide-react';
+import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
@@ -17,6 +17,9 @@ import { PortfolioForm } from './portfolio-form';
 import { ImportDialog } from './import-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import Link from 'next/link';
 
 
 const initialData: PortfolioData = {
@@ -49,7 +52,8 @@ const initialData: PortfolioData = {
     themeColor: '#0ea5e9', // sky-500
     font: 'inter',
     layout: 'classic-top',
-  }
+  },
+  resumeUrl: '',
 };
 
 export function PortfolioEditor() {
@@ -58,10 +62,11 @@ export function PortfolioEditor() {
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleTemplateSelect = (template: Omit<PortfolioData, 'design'>) => {
-    setPortfolio(prev => ({ ...template, design: prev.design }));
+  const handleTemplateSelect = (template: Omit<PortfolioData, 'design' | 'resumeUrl'>) => {
+    setPortfolio(prev => ({ ...template, design: prev.design, resumeUrl: prev.resumeUrl }));
     setIsTemplateDialogOpen(false);
     toast({ title: 'Template applied!', description: 'The portfolio has been updated with the new template.' });
   };
@@ -83,8 +88,17 @@ export function PortfolioEditor() {
   }
 
   const handleImportComplete = (data: PortfolioData) => {
-    setPortfolio(prev => ({...data, design: prev.design })); // Keep design settings
+    setPortfolio(prev => ({...data, design: prev.design, resumeUrl: prev.resumeUrl })); // Keep design settings
   };
+
+  const copyToClipboard = () => {
+    const portfolioUrl = `${window.location.origin}/portfolio/123`; // Replace with actual portfolio ID
+    navigator.clipboard.writeText(portfolioUrl).then(() => {
+        toast({ title: 'Link Copied!', description: 'Portfolio link copied to your clipboard.' });
+    }, () => {
+        toast({ title: 'Copy Failed', description: 'Could not copy link to clipboard.', variant: 'destructive' });
+    });
+  }
   
   const getPortfolioContentAsString = (): string => {
     return `
@@ -159,6 +173,31 @@ GitHub: ${portfolio.contact.github}
 
           <Button variant="outline" onClick={() => setIsAiSheetOpen(true)}><Wand2 className="mr-2 h-4 w-4" />AI Advisor</Button>
           <Button variant="outline" onClick={() => setIsImportDialogOpen(true)}><Upload className="mr-2 h-4 w-4" />Import</Button>
+          
+          <Dialog open={isShareDialogOpen} onOpenChange={setIsShareDialogOpen}>
+            <DialogTrigger asChild>
+                <Button variant="outline"><Share2 className="mr-2 h-4 w-4" />Share</Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Share Your Portfolio</DialogTitle>
+                    <DialogDescription>
+                        Your portfolio is ready to be shared. Use the link below to send it to anyone.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col gap-4 py-4">
+                    <Label htmlFor="portfolio-link">Your portfolio link</Label>
+                    <div className="flex gap-2">
+                        <Input id="portfolio-link" value={`${typeof window !== 'undefined' ? window.location.origin : ''}/portfolio/123`} readOnly />
+                        <Button onClick={copyToClipboard}>Copy Link</Button>
+                    </div>
+                     <Button asChild>
+                        <Link href="/portfolio/123" target="_blank">View Live Portfolio <Eye className="ml-2 h-4 w-4"/></Link>
+                    </Button>
+                </div>
+            </DialogContent>
+          </Dialog>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="bg-accent text-accent-foreground hover:bg-accent/90"><Download className="mr-2 h-4 w-4" />Export</Button>

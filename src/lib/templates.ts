@@ -6,7 +6,7 @@ const defaultDesign = {
   font: 'inter' as const,
 };
 
-export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] = [
+export const templates: { name: string; data: Omit<PortfolioData, 'design' | 'resumeUrl'> }[] = [
   {
     name: 'Modern Minimalist',
     data: {
@@ -19,6 +19,9 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Portfolio Website', description: 'A clean, fast, and responsive personal portfolio to showcase my work.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Design System', description: 'A reusable component library for a consistent UI across projects.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [],
+      education: [],
+      awards: [],
       contact: {
         email: 'jane.smith@example.com',
         phone: '',
@@ -39,6 +42,9 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Mobile App Redesign', description: 'Complete overhaul of a popular lifestyle app, focusing on user engagement.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Branding Identity', description: 'Created a new brand identity for a startup, including logo, color palette, and typography.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [],
+      education: [],
+      awards: [],
       contact: {
         email: 'chris.vision@example.com',
         phone: '+1 987 654 3210',
@@ -58,6 +64,15 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
       projects: [
         { id: '1', name: 'Customer Churn Prediction', description: 'Developed a model that predicts customer churn with 94% accuracy, reducing attrition by 15%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Market Basket Analysis', description: 'Identified key product associations to optimize store layouts and promotional strategies.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
+      ],
+      experience: [
+        { id: 'exp1', title: 'Senior Data Scientist', company: 'DataCorp', date: '2019-Present', description: 'Led team of data scientists on various projects.'},
+      ],
+      education: [
+         { id: 'edu1', institution: 'MIT', degree: 'PhD in AI', date: '2015-2019', description: 'Focused on deep learning.'}
+      ],
+      awards: [
+         { id: 'award1', name: 'Innovator of the Year', issuer: 'DataCorp', date: '2021', description: 'For work on churn prediction.'}
       ],
       contact: {
         email: 'e.reed@consulting.com',
@@ -79,6 +94,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Distributed Caching System', description: 'Built a high-availability caching layer for a high-traffic application.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Real-time API Gateway', description: 'Developed a secure and performant API gateway using GraphQL.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'ben.archer@email.com', phone: '', linkedin: 'linkedin.com/in/benarcher', github: 'github.com/benarcher' }
     }
   },
@@ -94,6 +110,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Organic Growth Campaign', description: 'Increased organic traffic by 150% in 6 months through targeted content and on-page SEO.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Product Launch Strategy', description: 'Led a multi-channel marketing campaign for a new SaaS product, exceeding lead goals by 40%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'olivia.chen@email.com', phone: '+1 234 567 891', linkedin: 'linkedin.com/in/oliviachen', github: '' }
     }
   },
@@ -109,6 +126,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Fitness Tracking App', description: 'Developed a cross-platform fitness app with real-time data sync and social features.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Augmented Reality Game', description: 'Built an interactive AR game for iOS using ARKit and SceneKit.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'leo.maxwell@email.com', phone: '', linkedin: 'linkedin.com/in/leomaxwell', github: 'github.com/leomaxwell' }
     }
   },
@@ -124,6 +142,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'AI-Powered Analytics Dashboard', description: 'Led the development of a B2B analytics tool from concept to launch, resulting in a 20% increase in user engagement.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Mobile App Monetization', description: 'Defined and executed a new monetization strategy, increasing ARPU by 35%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'sophia.cruz@email.com', phone: '+1 345 678 901', linkedin: 'linkedin.com/in/sophiacruz', github: '' }
     }
   },
@@ -139,6 +158,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Fashion Lookbook', description: 'Shot and edited a complete lookbook for a new clothing line, featured in Vogue.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Corporate Headshots', description: 'Provided professional headshots for a Fortune 500 company\'s executive team.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'marco.rossi@email.com', phone: '+1 456 789 012', linkedin: 'linkedin.com/in/marcorossi', github: '' }
     }
   },
@@ -154,6 +174,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'CI/CD Pipeline Automation', description: 'Designed and implemented a fully automated CI/CD pipeline, reducing deployment time by 80%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Infrastructure as Code Migration', description: 'Migrated legacy infrastructure to Terraform, improving scalability and reducing costs by 30%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'aisha.khan@email.com', phone: '', linkedin: 'linkedin.com/in/aishakhan', github: 'github.com/aishakhan' }
     }
   },
@@ -169,6 +190,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Developer Documentation Portal', description: 'Wrote and structured the complete documentation for a public API, improving developer onboarding.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Company Tech Blog', description: 'Managed and wrote for a tech blog, growing readership by 200% over one year.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'ethan.hunt@email.com', phone: '', linkedin: 'linkedin.com/in/ethanhunt', github: '' }
     }
   },
@@ -184,6 +206,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Pixel Art RPG', description: 'A retro-style RPG with a modern twist, praised for its engaging story and combat system.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Mobile Puzzle Game', description: 'A minimalist puzzle game that reached 1 million downloads on the App Store.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'zoe.infinity@email.com', phone: '', linkedin: 'linkedin.com/in/zoeinfinity', github: 'github.com/zoeinfinity' }
     }
   },
@@ -199,6 +222,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Enterprise Security Audit', description: 'Conducted a comprehensive security audit for a financial institution, identifying and mitigating critical vulnerabilities.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Incident Response Plan', description: 'Developed and implemented a new incident response plan, reducing response time by 50%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'derek.vector@email.com', phone: '', linkedin: 'linkedin.com/in/derekvector', github: 'github.com/derekvector' }
     }
   },
@@ -214,6 +238,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Company Valuation Model', description: 'Built a complex DCF model to value a private tech company, used for a successful acquisition.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Quarterly Earnings Report', description: 'Analyzed and presented quarterly financial results to senior management and investors.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'chloe.monet@email.com', phone: '+1 567 890 123', linkedin: 'linkedin.com/in/chloemonet', github: '' }
     }
   },
@@ -229,6 +254,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Community Arts Center', description: 'Lead architect for an award-winning community center featuring green-roof technology.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Mixed-Use Residential Tower', description: 'Designed a 30-story residential building with a focus on natural light and shared spaces.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'liam.structure@email.com', phone: '+1 678 901 234', linkedin: 'linkedin.com/in/liamstructure', github: '' }
     }
   },
@@ -244,6 +270,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Diversity & Inclusion Initiative', description: 'Launched a company-wide D&I program that increased representation by 15%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Performance Review Overhaul', description: 'Redesigned the performance review process to be more fair, transparent, and development-focused.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'nora.people@email.com', phone: '+1 789 012 345', linkedin: 'linkedin.com/in/norapeople', github: '' }
     }
   },
@@ -259,6 +286,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Startup Branding Package', description: 'Developed a complete visual identity for a tech startup, from logo to social media templates.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Event Marketing Materials', description: 'Designed all print and digital materials for a major industry conference.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'eva.brandt@email.com', phone: '', linkedin: 'linkedin.com/in/evabrandt', github: '' }
     }
   },
@@ -274,6 +302,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Robotic Arm Design', description: 'Designed a lightweight, high-precision robotic arm for automated manufacturing.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Consumer Product Prototype', description: 'Developed and tested a prototype for a new kitchen appliance, optimizing for cost and manufacturability.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'oscar.stone@email.com', phone: '', linkedin: 'linkedin.com/in/oscarstone', github: 'github.com/oscarstone' }
     }
   },
@@ -289,6 +318,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Published Paper in Nature', description: 'First author on a paper detailing a novel neural circuit involved in spatial memory.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Conference Presentation', description: 'Presented findings on synaptic plasticity at the Society for Neuroscience annual meeting.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'aris.thorne@university.edu', phone: '', linkedin: 'linkedin.com/in/aristhorne', github: '' }
     }
   },
@@ -304,6 +334,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Documentary Film', description: 'Edited a feature-length documentary that was selected for the Sundance Film Festival.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Commercial Advertisement', description: 'Created a high-energy TV commercial for a national sports brand.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'ruby.frame@email.com', phone: '', linkedin: 'linkedin.com/in/rubyframe', github: '' }
     }
   },
@@ -319,6 +350,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Automated E2E Test Suite', description: 'Developed a comprehensive end-to-end test suite for a complex web app, increasing test coverage by 70%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Performance Testing Framework', description: 'Established a performance testing framework using JMeter to identify and resolve bottlenecks.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'quinn.veritas@email.com', phone: '', linkedin: 'linkedin.com/in/quinnveritas', github: 'github.com/quinnveritas' }
     }
   },
@@ -334,6 +366,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Sales Performance Dashboard', description: 'Created an interactive Tableau dashboard to track sales KPIs, leading to a 10% increase in team efficiency.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Customer Segmentation Analysis', description: 'Analyzed customer data to identify key segments, informing targeted marketing strategies.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'ava.numbers@email.com', phone: '', linkedin: 'linkedin.com/in/avanumbers', github: '' }
     }
   },
@@ -349,6 +382,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'IoT Weather Station', description: 'Designed the hardware and firmware for a low-power IoT device that collects and transmits environmental data.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Motor Control System', description: 'Developed a high-efficiency motor control circuit for an industrial robotics application.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'elias.circuit@email.com', phone: '', linkedin: 'linkedin.com/in/eliascircuit', github: 'github.com/eliascircuit' }
     }
   },
@@ -364,6 +398,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Viral Marketing Campaign', description: 'Launched a TikTok campaign that garnered over 5 million views and increased follower count by 300%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Brand Ambassador Program', description: 'Developed and managed a successful brand ambassador program with over 50 influencers.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'maya.trend@email.com', phone: '', linkedin: 'linkedin.com/in/mayatrend', github: '' }
     }
   },
@@ -379,6 +414,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Michelin Star Restaurant', description: 'Led the kitchen team to earn its first Michelin star through creative menu design and impeccable execution.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Farm-to-Table Concept', description: 'Developed and launched a new restaurant concept focused on local sourcing and sustainability.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'julian.flavour@email.com', phone: '+1 890 123 456', linkedin: 'linkedin.com/in/julianflavour', github: '' }
     }
   },
@@ -394,6 +430,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Charge Nurse Leadership', description: 'Served as charge nurse on the night shift, managing patient flow and mentoring junior staff in a high-pressure ICU.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Patient Education Program', description: 'Developed a new patient education initiative for post-operative care, improving patient outcomes and satisfaction scores.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'clara.hale@email.com', phone: '+1 901 234 567', linkedin: 'linkedin.com/in/clarahale', github: '' }
     }
   },
@@ -409,6 +446,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Interactive Historical Simulation', description: 'Designed a semester-long project where students simulate historical events, leading to a 25% improvement in test scores.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Oral History Project', description: 'Led a community-based oral history project, connecting students with local elders to preserve their stories.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'samuel.teach@email.com', phone: '', linkedin: 'linkedin.com/in/samuelteach', github: '' }
     }
   },
@@ -424,6 +462,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Annual Tech Summit', description: 'Managed a 3-day tech summit for 2000+ attendees, overseeing everything from venue selection to speaker coordination.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'International Sales Kick-off', description: 'Organized a week-long sales event in Barcelona for a global team of 300 employees.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'penelope.plan@email.com', phone: '+1 123 456 789', linkedin: 'linkedin.com/in/penelopeplan', github: '' }
     }
   },
@@ -439,6 +478,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Sentiment Analysis API', description: 'Developed and deployed a real-time sentiment analysis API that processes 1M requests per day.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Image Recognition System', description: 'Built an image classification model for an e-commerce platform with 98% accuracy.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'neo.matrix@email.com', phone: '', linkedin: 'linkedin.com/in/neomatrix', github: 'github.com/neomatrix' }
     }
   },
@@ -454,6 +494,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Downtown Loft Renovation', description: 'Transformed a historic loft into a modern living space, featured in Architectural Digest.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Boutique Hotel Design', description: 'Designed the interiors for a new boutique hotel, from the lobby to the guest rooms.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'stella.space@email.com', phone: '+1 234 567 890', linkedin: 'linkedin.com/in/stellaspace', github: '' }
     }
   },
@@ -469,6 +510,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Tech Company Acquisition', description: 'Lead counsel on a $500M acquisition of a software company, managing all legal aspects of the deal.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Series B Funding Round', description: 'Represented a startup in its successful $50M Series B funding round.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'arthur.justice@lawfirm.com', phone: '+1 345 678 901', linkedin: 'linkedin.com/in/arthurjustice', github: '' }
     }
   },
@@ -484,6 +526,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'President\'s Club Winner', description: 'Achieved 180% of my annual sales quota, earning the top spot in the company.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Enterprise Account Growth', description: 'Grew a key enterprise account from $100k to $1.5M in annual recurring revenue in two years.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'rex.closer@email.com', phone: '+1 456 789 012', linkedin: 'linkedin.com/in/rexcloser', github: '' }
     }
   },
@@ -499,6 +542,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'E-commerce Website Copy', description: 'Rewrote all product descriptions for an online retailer, leading to a 20% increase in conversion rate.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'SaaS Email Onboarding Sequence', description: 'Created an automated email sequence that improved user activation rates by 40%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'willow.words@email.com', phone: '', linkedin: 'linkedin.com/in/willowwords', github: '' }
     }
   },
@@ -514,6 +558,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Decentralized Finance (DeFi) Protocol', description: 'Developed the smart contracts for a lending and borrowing protocol on Ethereum.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'NFT Marketplace', description: 'Built a full-stack NFT marketplace with minting, buying, and selling functionalities.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'cypher.block@email.com', phone: '', linkedin: 'linkedin.com/in/cypherblock', github: 'github.com/cypherblock' }
     }
   },
@@ -529,6 +574,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Gene-Editing Platform Development', description: 'Optimized a CRISPR delivery system, increasing editing efficiency by 50% in target cells.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Preclinical Study Lead', description: 'Led a preclinical study for a new gene therapy, demonstrating its safety and efficacy in animal models.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'lena.gene@biotech.com', phone: '', linkedin: 'linkedin.com/in/lenagene', github: '' }
     }
   },
@@ -544,6 +590,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'AAA Game Character', description: 'Modeled and textured a main character for a next-gen video game.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Animated Short Film', description: 'Lead animator for an award-winning animated short, responsible for character performance.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'axel.mesh@email.com', phone: '', linkedin: 'linkedin.com/in/axelmesh', github: '' }
     }
   },
@@ -559,6 +606,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Office 365 Migration', description: 'Assisted in the seamless migration of 500+ users to Office 365, providing training and support.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Knowledge Base Creation', description: 'Created a comprehensive internal knowledge base, reducing recurring support tickets by 30%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'chip.reboot@email.com', phone: '+1 567 890 123', linkedin: 'linkedin.com/in/chipreboot', github: '' }
     }
   },
@@ -574,6 +622,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'CRM Implementation', description: 'Acted as the lead business analyst for a company-wide Salesforce implementation, ensuring stakeholder alignment.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Workflow Automation Project', description: 'Analyzed and redesigned a key business workflow, resulting in a 40% reduction in manual effort.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'brooke.process@email.com', phone: '', linkedin: 'linkedin.com/in/brookeprocess', github: '' }
     }
   },
@@ -589,6 +638,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Film Score', description: 'Composed the original score for an independent film that won Best Original Score at a film festival.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Solo Album', description: 'Wrote, performed, and produced a full-length instrumental album.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'melody.harmony@email.com', phone: '', linkedin: 'linkedin.com/in/melodyharmony', github: '' }
     }
   },
@@ -604,6 +654,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Highway Interchange Design', description: 'Lead design engineer for a major highway interchange project, improving traffic flow and safety.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Stormwater Management System', description: 'Designed a sustainable stormwater management system for a new residential development.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'bridge.walker@email.com', phone: '+1 678 901 234', linkedin: 'linkedin.com/in/bridgewalker', github: '' }
     }
   },
@@ -619,6 +670,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Senior Engineering Hires', description: 'Successfully sourced and hired 15 senior software engineers in one quarter, meeting critical team growth goals.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'University Recruiting Program', description: 'Established a new university recruiting program, creating a pipeline of early-career talent.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'hunter.talent@email.com', phone: '+1 789 012 345', linkedin: 'linkedin.com/in/huntertalent', github: '' }
     }
   },
@@ -634,6 +686,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Children\'s Book', description: 'Illustrated a best-selling children\'s book, published by a major publishing house.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Magazine Cover', description: 'Created the cover illustration for an issue of The New Yorker.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'lina.sketch@email.com', phone: '', linkedin: 'linkedin.com/in/linasketch', github: '' }
     }
   },
@@ -649,6 +702,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Enterprise Cloud Migration', description: 'Architected the migration of a large enterprise from on-premise data centers to AWS, resulting in 40% cost savings.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Serverless Data Processing Pipeline', description: 'Designed a serverless pipeline using AWS Lambda and Kinesis for real-time data processing.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'sky.stratus@email.com', phone: '', linkedin: 'linkedin.com/in/skystratus', github: 'github.com/skystratus' }
     }
   },
@@ -664,6 +718,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Award-Winning Feature Story', description: 'Wrote an exposé on corporate corruption that won a national journalism award.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Documentary Podcast Series', description: 'Hosted and produced an 8-part podcast series on a historical cold case.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'piper.report@email.com', phone: '', linkedin: 'linkedin.com/in/piperreport', github: '' }
     }
   },
@@ -679,6 +734,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Generative Research Study', description: 'Conducted a foundational research study to identify unmet user needs, leading to a new product line.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'A/B Testing Program', description: 'Established and ran an A/B testing program that led to a 15% improvement in user conversion.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'riley.insight@email.com', phone: '', linkedin: 'linkedin.com/in/rileyinsight', github: '' }
     }
   },
@@ -694,6 +750,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Churn Reduction Initiative', description: 'Developed a proactive outreach program that reduced customer churn by 25% in six months.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Quarterly Business Reviews (QBRs)', description: 'Implemented a new QBR process for key accounts, increasing customer satisfaction and identifying expansion opportunities.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'carter.client@email.com', phone: '+1 890 123 456', linkedin: 'linkedin.com/in/carterclient', github: '' }
     }
   },
@@ -709,6 +766,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Animated TV Series', description: 'Lead character animator for a popular animated series on a major streaming platform.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'SaaS Explainer Video', description: 'Created an animated explainer video for a software company that increased website conversions by 30%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'frank.motion@email.com', phone: '', linkedin: 'linkedin.com/in/frankmotion', github: '' }
     }
   },
@@ -724,6 +782,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Database Performance Optimization', description: 'Optimized database queries and indexing for a high-traffic application, reducing average query time by 75%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Disaster Recovery Plan', description: 'Designed and implemented a comprehensive disaster recovery plan, ensuring business continuity.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'tabitha.index@email.com', phone: '', linkedin: 'linkedin.com/in/tabithaindex', github: 'github.com/tabithaindex' }
     }
   },
@@ -739,6 +798,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Runway Collection', description: 'Designed and produced a 20-piece collection for New York Fashion Week, receiving positive reviews.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Sustainable Clothing Line', description: 'Launched a small, sustainable clothing line using upcycled materials.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'vera.vogue@email.com', phone: '', linkedin: 'linkedin.com/in/veravogue', github: '' }
     }
   },
@@ -754,6 +814,7 @@ export const templates: { name: string; data: Omit<PortfolioData, 'design'> }[] 
         { id: '1', name: 'Warehouse Optimization Project', description: 'Redesigned the warehouse layout and inventory management system, increasing order fulfillment speed by 25%.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
         { id: '2', name: 'Cost Reduction Initiative', description: 'Led a cross-functional team to identify and implement cost-saving measures, resulting in $2M in annual savings.', imageUrl: 'https://placehold.co/400x300.png', link: '#' },
       ],
+      experience: [], education: [], awards: [],
       contact: { email: 'ron.systems@email.com', phone: '+1 901 234 567', linkedin: 'linkedin.com/in/ronsystems', github: '' }
     }
   }

@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Plus, Trash2, Upload, LayoutPanelTop, PanelLeft, LayoutList } from 'lucide-react';
+import { Plus, Trash2, Upload, LayoutPanelTop, PanelLeft, LayoutList, FileText } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from './ui/label';
@@ -149,13 +149,13 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
       addItem('awards', newAward);
     }
 
-    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>, callback: (dataUrl: string) => void) => {
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>, callback: (dataUrl: string) => void) => {
         const file = e.target.files?.[0];
         if (file) {
-            if (file.size > 2 * 1024 * 1024) { // 2MB limit
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
                 toast({
-                    title: "Image too large",
-                    description: "Please select an image smaller than 2MB.",
+                    title: "File too large",
+                    description: "Please select a file smaller than 5MB.",
                     variant: "destructive",
                 });
                 return;
@@ -169,6 +169,13 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
             reader.readAsDataURL(file);
         }
     };
+
+    const handleResumeUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        handleFileChange(e, (dataUrl) => {
+            handleFieldChange('resumeUrl', dataUrl);
+            toast({ title: 'Resume Uploaded', description: 'Your resume has been successfully attached.' });
+        });
+    }
     
     const handleDesignTemplateSelect = (template: { themeColor: string; font: PortfolioData['design']['font'] }) => {
         setPortfolio(prev => ({
@@ -319,7 +326,7 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
                                         <span className="sr-only">Upload Photo</span>
                                     </Label>
                                 </Button>
-                                <Input type="file" id="avatar-upload" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, (dataUrl) => handleFieldChange('avatarUrl', dataUrl))} />
+                                <Input type="file" id="avatar-upload" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, (dataUrl) => handleFieldChange('avatarUrl', dataUrl))} />
                              </div>
                         </div>
                     </div>
@@ -330,6 +337,47 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
                     <div className="space-y-2">
                         <Label htmlFor="title">Professional Title</Label>
                         <Input id="title" placeholder="e.g. Full-Stack Developer" value={portfolio.title} onChange={(e) => handleFieldChange('title', e.target.value)} />
+                    </div>
+                </CardContent>
+            </Card>
+
+             <Card>
+                <CardHeader>
+                    <CardTitle>Resume</CardTitle>
+                    <CardDescription>Upload your resume as a PDF. This will be available for download on your portfolio.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-2">
+                        <Label htmlFor="resume-upload">Upload Resume (PDF)</Label>
+                        <div className="flex items-center gap-2">
+                            <Input
+                                id="resume-display"
+                                readOnly
+                                value={portfolio.resumeUrl ? 'Resume uploaded successfully.' : 'No resume uploaded.'}
+                                className="flex-1"
+                                placeholder="Upload your resume..."
+                            />
+                            <Button asChild variant="outline">
+                                <Label htmlFor="resume-upload" className="cursor-pointer">
+                                    <Upload className="h-4 w-4 mr-2"/>
+                                    Browse
+                                </Label>
+                            </Button>
+                        </div>
+                        <Input
+                            type="file"
+                            id="resume-upload"
+                            className="hidden"
+                            accept=".pdf"
+                            onChange={handleResumeUpload}
+                        />
+                         {portfolio.resumeUrl && (
+                             <div className="flex items-center gap-2 pt-2">
+                                <FileText className="h-5 w-5 text-primary"/>
+                                <span className="text-sm text-muted-foreground">Resume is attached.</span>
+                                <Button variant="link" className="text-destructive h-auto p-0" onClick={() => handleFieldChange('resumeUrl', '')}>Remove</Button>
+                             </div>
+                         )}
                     </div>
                 </CardContent>
             </Card>
@@ -450,7 +498,7 @@ export function PortfolioForm({ portfolio, setPortfolio, tab = 'content' }: Port
                                         id={`project-img-upload-${project.id}`} 
                                         className="hidden" 
                                         accept="image/*" 
-                                        onChange={(e) => handleImageUpload(e, (dataUrl) => handleProjectChange(project.id, 'imageUrl', dataUrl))}
+                                        onChange={(e) => handleFileChange(e, (dataUrl) => handleProjectChange(project.id, 'imageUrl', dataUrl))}
                                     />
                                 </div>
                                 

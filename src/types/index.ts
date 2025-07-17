@@ -51,4 +51,5 @@ export interface PortfolioData {
     font: 'inter' | 'space' | 'system' | 'serif';
     layout: 'classic-top' | 'modern-left' | 'centered-minimal';
   };
+  resumeUrl: string; // URL to the uploaded resume file
 }
