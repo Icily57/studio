@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { PortfolioData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Upload, Wand2 } from 'lucide-react';
+import { Download, Eye, FileImage, FileText, FileType, LayoutTemplate, Sparkles, Upload, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { exportAsJPEG, exportAsPDF, exportAsPNG } from '@/lib/export-helpers';
 import { AiAdvisorSheet } from './ai-advisor-sheet';
@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ScrollArea } from './ui/scroll-area';
 import { PortfolioPreview } from './portfolio-preview';
 import { PortfolioForm } from './portfolio-form';
+import { AiGeneratorDialog } from './ai-generator-dialog';
 
 const initialData: PortfolioData = {
   name: 'Alex Doe',
@@ -37,6 +38,7 @@ export function PortfolioEditor() {
   const [portfolio, setPortfolio] = useState<PortfolioData>(initialData);
   const [isAiSheetOpen, setIsAiSheetOpen] = useState(false);
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
+  const [isAiGeneratorOpen, setIsAiGeneratorOpen] = useState(false);
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
   const { toast } = useToast();
 
@@ -45,6 +47,12 @@ export function PortfolioEditor() {
     setIsTemplateDialogOpen(false);
     toast({ title: 'Template applied!', description: 'The portfolio has been updated with the new template.' });
   };
+  
+  const handleAiGenerate = (data: PortfolioData) => {
+    setPortfolio(data);
+    setIsAiGeneratorOpen(false);
+    toast({ title: 'Portfolio Generated!', description: 'Your new AI-powered portfolio is ready.' });
+  }
 
   const handleExport = (format: 'pdf' | 'png' | 'jpeg' | 'doc') => {
     toast({ title: "Exporting...", description: `Your portfolio is being exported as a ${format.toUpperCase()} file.`});
@@ -87,6 +95,11 @@ GitHub: ${portfolio.contact.github}
             <Eye className="mr-2 h-4 w-4" />
             Preview
           </Button>
+          
+          <Button variant="outline" onClick={() => setIsAiGeneratorOpen(true)}>
+            <Sparkles className="mr-2 h-4 w-4" />Create with AI
+          </Button>
+
           <Dialog open={isTemplateDialogOpen} onOpenChange={setIsTemplateDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline"><LayoutTemplate className="mr-2 h-4 w-4" />Templates</Button>
@@ -157,6 +170,7 @@ GitHub: ${portfolio.contact.github}
         </div>
       </div>
 
+      <AiGeneratorDialog open={isAiGeneratorOpen} onOpenChange={setIsAiGeneratorOpen} onGenerate={handleAiGenerate} />
       <AiAdvisorSheet open={isAiSheetOpen} onOpenChange={setIsAiSheetOpen} portfolioContent={getPortfolioContentAsString()} />
       
       <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
